@@ -1,27 +1,46 @@
 <template>
-  <div class="container spend-track">
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">SG Kauf</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="#">Sign out</a>
+      </li>
+    </ul>
+  </header>
+  <div class="container-fluid main-wrapper">
     <div class="row">
-      <!-- <nav class="col-3" data-spend-track-wr="LeftMenu">
-        <left-menu class="spend-track__left-menu" :items='buyItems' title="Vertical Menu" />
-      </nav> -->
-      <div class="col-9" data-spend-track-wr="Content">
-          <div class="col-8">
-            <!-- <data-sender btnColor="#c36f9e" @start-sending="started" @end-sending="ended" /> -->
-            <h2>{{title}}</h2>
-            <img alt="Vue logo" src="./assets/logo.png">
-            <add-item />
-            <buy-list :items="buyItems" />
+      <div class="col main-content">
+        <div id="spend-track">
+          <div class="row">
+            <div class="col pl-0">
+              <left-menu :dates='dates' @load-date='getDate' /> 
+            </div>
+            <div class="col">
+              <!-- <add-item /> -->
+              <buy-list :items="activeDateBuys" />
+            </div>
           </div>
+        </div>
+      </div>
+      <div class="col aside">
+        <div class="weather-forecast">
+          <h2>Aside column</h2>
+        </div>
       </div>
     </div>
-  </div>
-</template>
+  </div> 
+</template> 
 
 <script>
+import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import LeftMenu from './components/LeftMenu.vue';
+import LeftMenu from './components/LeftMenu.vue';
 import BuyList from './components/BuyList.vue';
-import AddItem from './components/AddItem.vue';
+// import AddItem from './components/AddItem.vue';
 // import DataSender from './components/DataSender.vue';
 // data:
 import buyItems from './data/buy-list.json'; 
@@ -31,29 +50,63 @@ export default {
   data() {
     return {
       title: 'SG-Kauf--Vue',
+      dates: [],
+      activeDateBuys: [],
       buyItems,
       start: null
     };
   },
   methods: {
-    reverseMessage() {
-      this.newText = this.newText
-        .split('')
-        .reverse()
-        .join('');
+    getAllDates: function() {
+      let dates = this.dates;
+
+      fetch('http://localhost:3030/list-dates')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' + response.status);
+              return;
+            }
+
+            response.json().then(function(data) {
+              data.forEach(date => {
+                dates.push(date);
+              });
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
     },
-    started(e) {
-      this.start = e;
-      console.log('Start sending data: ', e);
-    },
-    ended() {
-      const responseLasted = Date.now() - this.start;
-      console.log('Finish sending data. Lasted: ', responseLasted);
-    },
+    getDate: function(e) {
+      let thisApp = this;
+      let newDate = e;
+
+      fetch(`http://localhost:3030/read-date?date=${newDate}`)
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' + response.status);
+              return;
+            }
+
+            response.json().then(function(data) {
+              thisApp.activeDateBuys = [...data];
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
+    }
+  },
+  mounted: function () {
+    this.getAllDates();
   },
   components: {
-    // LeftMenu,
-    AddItem,
+    LeftMenu,
+    // AddItem,
     BuyList,
     // DataSender
   },
@@ -67,6 +120,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
