@@ -16,17 +16,17 @@
       <div class="col main-content">
         <div id="spend-track">
           <div class="row">
-            <div class="col pl-0">
+            <div class="pl-0">
               <left-menu :dates='dates' @load-date='getDate' /> 
             </div>
             <div class="col">
               <!-- <add-item /> -->
-              <buy-list :items="activeDateBuys" />
+              <buy-list :dateBuys="activeDateBuys" />
             </div>
           </div>
         </div>
       </div>
-      <div class="col aside">
+      <div class="col-2 aside">
         <div class="weather-forecast">
           <h2>Aside column</h2>
         </div>
