@@ -1,5 +1,5 @@
 <template>
-  <nav id="sidebarMenu" class="col-lg-5 d-md-block bg-light sidebar collapse vertical-menu">
+  <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse vertical-menu">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column vertical-menu__list">
           <li class="nav-item vertical-menu__item" :class="{'vertical-menu__item--active': date === activeItem}" v-for="date in dates" :key="date">
@@ -57,7 +57,9 @@ export default {
       }
     }
     &__item-link {
-     white-space: nowrap; 
+      display: flex;
+      padding-left: .5rem;
+      justify-content: space-between;
     }
     &__item-icon {
      margin-right: .5rem;
