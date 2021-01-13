@@ -1,0 +1,66 @@
+<template>
+    <li class="buy">
+        <buy-info :info="infoFromBuy" />
+        <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
+    </li>
+</template>
+
+<script>
+import BuyInfo from './BuyInfo.vue';
+
+export default {
+  name: 'buy', 
+  props: {
+    buy: Object 
+  },
+  computed: {
+      infoFromBuy() {
+          const buy = this.buy;
+          const info = {
+            date: buy.date, 
+            time: buy.time, 
+            currency: buy.currency,
+            country: buy.country, 
+            city: buy.address.city,
+            index: buy.address.index,
+            street: buy.address.street,
+            houseNumber: buy.address.houseNumber,
+            payMethod: buy.payMethod,
+            shopName: buy.shopName
+        };
+
+        return info;
+      }
+  }, 
+  components: {
+    BuyInfo,
+    //   buyProducts
+  }
+} // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
+</script>
+
+<style scoped lang="scss">
+    .buy {
+        counter-increment: buy-counter;
+        padding-left: 2rem;
+        margin-bottom: .5rem;
+
+        &:hover {
+            background-color: #fefefe;
+        }
+
+        &__products {
+            align-items: flex-start;
+            margin-top: 1rem;
+            font-size: .95rem;
+            color: #565;
+        }
+
+        &__badge {
+            color: #fff;
+            position: absolute;
+            top: 18px;
+            right: 12px;
+        }
+    } 
+</style>
