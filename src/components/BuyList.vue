@@ -1,20 +1,32 @@
 <template>
-  <div class="buy-list">
-    <h3>Buy list</h3>
-    <ul class="list-group buy-list__items">
-      <li class="list-group-item d-flex justify-content-between align-items-center buy-list__item" v-for="item in items" :key="item.date">
-        <span class="badge bg-primary rounded-pill buy-list__badge">{{item.products ? item.products.length: 0 }}</span>
-      </li>
+  <div class="buy-list pt-3">
+    <button v-if="dateBuys.length" style="background-color: green; border-radius: 50%; color: white;">+</button>
+    <ul class="list-group list-group-flush buy-list__items">
+      <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="i" />
+      <!-- <li class="list-group-item buy-list__item" v-for="item in items" :key="item.date">
+        <ul class="list-group buy-list__products">
+          <li v-for="product in item.products" :key="product.name">
+            <span class="mr-1">{{product.name}}</span> 
+            <span class="mr-1">{{product.weightAmount}}</span> 
+            <span class="mr-1">{{product.measure}}</span> 
+          </li>
+        </ul>
+      </li> -->
     </ul>
   </div>
 </template>
 
 <script>
+import Buy from './Buy.vue';
+
 export default {
   name: 'buy-list',
   props: {
-    items: Array
+    dateBuys: Array
   },
+  components: {
+    Buy
+  }
 };
 </script>
 
@@ -22,24 +34,9 @@ export default {
   .buy-list {
     counter-reset: buy-counter;
 
-    &__item {
-      counter-increment: buy-counter;
-      padding-left: 2rem;
-
-      &:hover {
-        background-color: #fefefe;
-      }
-
-      &::before {
-        content: counter(buy-counter)".";
-        margin-left: -1.5rem;
-        font-size: 1.3rem;
-        color: #ccc;
-      }
-    }
-
-    &__badge {
-      color: #fff;
+    &__items {
+      align-items: stretch;
+      list-style-type: none;
     }
   } 
 </style>
