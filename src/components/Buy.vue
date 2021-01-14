@@ -1,5 +1,6 @@
 <template>
-    <li class="buy">
+    <!-- TODO: change to DIV, if it is default -->
+    <li class="buy" :class="{ 'buy--default': isDefault }">
         <buy-info :info="infoFromBuy" />
         <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
     </li>
@@ -11,7 +12,8 @@ import BuyInfo from './BuyInfo.vue';
 export default {
   name: 'buy', 
   props: {
-    buy: Object 
+    buy: Object,
+    isDefault: Boolean
   },
   computed: {
       infoFromBuy() {
@@ -47,6 +49,15 @@ export default {
 
         &:hover {
             background-color: #fefefe;
+        }
+
+        &--default {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            
+            .buy-info::before {
+                content: none;
+            }
         }
 
         &__products {

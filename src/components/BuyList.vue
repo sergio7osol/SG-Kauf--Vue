@@ -1,6 +1,6 @@
 <template>
   <div class="buy-list pt-3">
-    <button v-if="dateBuys.length" style="background-color: green; border-radius: 50%; color: white;">+</button>
+    <buy :isDefault="true" :buy="emptyBuy" />
     <ul class="list-group list-group-flush buy-list__items">
       <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="i" />
       <!-- <li class="list-group-item buy-list__item" v-for="item in items" :key="item.date">
@@ -21,6 +21,25 @@ import Buy from './Buy.vue';
 
 export default {
   name: 'buy-list',
+  data() {
+    return {
+      emptyBuy: {
+        date: "00.00.2020",
+        time: "00:00",
+        currency: "EUR",
+        country: "Germany",
+        address: {
+            city: "Hamburg",
+            index: "22307",
+            street: "Fuhlsbuettler Str.",
+            houseNumber: "387"
+        },
+        payMethod: "EC card",
+        shopName: "REWE",
+        products: []
+      }
+    }
+  },
   props: {
     dateBuys: Array
   },
@@ -32,9 +51,8 @@ export default {
 
 <style scoped lang="scss">
   .buy-list {
-    counter-reset: buy-counter;
-
     &__items {
+      counter-reset: buy-counter;
       align-items: stretch;
       list-style-type: none;
     }
