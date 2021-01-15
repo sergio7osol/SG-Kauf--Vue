@@ -1,8 +1,8 @@
 <template>
     <form class="buy-info">
         <div class="buy-info__date-and-time">
-            <input class="form-control buy-info__date" v-model="date" type="text" minlength="10" maxlength="10" pattern="^[0-3][0-9]\.[0-1][0-2]\.20[1-2][9,0,1]$" :readonly="!edit">
-            <input class="form-control buy-info__time" v-model="time" type="text" minlength="5" maxlength="5" pattern="^[0-2][0-9]:[0-5][0-9]$" :readonly="!edit">
+            <input class="form-control buy-info__date" min="2018-11-01" v-model="date" :readonly="!edit" required type="date">
+            <input class="form-control buy-info__time" v-model="time" minlength="5" maxlength="5" pattern="^[0-2][0-9]:[0-5][0-9]$" :readonly="!edit" type="text">
         </div>
         <div class="buy-info__address">
             <select class="form-control custom-select buy-info__country" v-model="country">
@@ -142,7 +142,7 @@ export default {
             margin-right: 1.5rem;
         }
         &__date {
-            width: 6.8rem;
+            width: 10.5rem;
         }
         &__time {
             width: 4.3rem;
