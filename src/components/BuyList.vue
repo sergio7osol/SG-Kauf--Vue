@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       emptyBuy: {
-        date: "00.00.2020",
+        date: "",
         time: "00:00",
         currency: "EUR",
         country: "Germany",
