@@ -1,7 +1,7 @@
 <template>
     <form class="buy-info">
         <div class="buy-info__date-and-time">
-            <input class="form-control buy-info__date" min="2018-11-01" v-model="date" :readonly="!edit" required type="date">
+            <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date">
             <input class="form-control buy-info__time" v-model="time" minlength="5" maxlength="5" pattern="^[0-2][0-9]:[0-5][0-9]$" :readonly="!edit" type="text">
         </div>
         <div class="buy-info__address">
@@ -77,6 +77,22 @@ export default {
 
       return inf;
   },
+  computed: {
+      convertDate: {
+          get() {
+              const currentDate = this.date;
+              const normalizedDate = currentDate.split('.').reverse().join('-');
+
+              return normalizedDate;
+          },
+          set(v) {
+              const newDate = v;
+              const normalizedDate = newDate.split('-').reverse().join('.');
+
+              this.date = normalizedDate;
+          }
+      }
+  },
   methods: {
       saveBuy() {
         let thisApp = this;
@@ -121,6 +137,8 @@ export default {
                 console.log('Fetch Error :-S', err);
             });
         }
+    },
+    components: {
     }
 } // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>

@@ -18,7 +18,7 @@
 
 <script>
 import Buy from './Buy.vue';
-
+ 
 export default {
   name: 'buy-list',
   data() {
