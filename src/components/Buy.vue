@@ -1,8 +1,10 @@
 <template>
-    <!-- TODO: change to DIV, if it is default -->
-    <li class="buy" :class="{ 'buy--default': isDefault }">
+    <div class="buy buy--default" v-if="isDefault">
         <buy-info :info="infoFromBuy" />
         <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
+    </div>
+    <li class="buy" v-else>
+        <buy-info :info="infoFromBuy" />
     </li>
 </template>
 
