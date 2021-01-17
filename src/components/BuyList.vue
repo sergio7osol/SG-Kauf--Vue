@@ -3,15 +3,6 @@
     <buy :isDefault="true" :buy="emptyBuy" />
     <ul class="list-group list-group-flush buy-list__items">
       <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="i" />
-      <!-- <li class="list-group-item buy-list__item" v-for="item in items" :key="item.date">
-        <ul class="list-group buy-list__products">
-          <li v-for="product in item.products" :key="product.name">
-            <span class="mr-1">{{product.name}}</span> 
-            <span class="mr-1">{{product.weightAmount}}</span> 
-            <span class="mr-1">{{product.measure}}</span> 
-          </li>
-        </ul>
-      </li> -->
     </ul>
   </div>
 </template>

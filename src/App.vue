@@ -20,7 +20,6 @@
               <left-menu :dates='dates' @load-date='getDate' /> 
             </div>
             <div class="col">
-              <!-- <add-item /> -->
               <buy-list :dateBuys="activeDateBuys" />
             </div>
           </div>
@@ -40,10 +39,6 @@ import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LeftMenu from './components/LeftMenu.vue';
 import BuyList from './components/BuyList.vue';
-// import AddItem from './components/AddItem.vue';
-// import DataSender from './components/DataSender.vue';
-// data:
-import buyItems from './data/buy-list.json'; 
 
 export default {
   name: 'App',
@@ -52,7 +47,6 @@ export default {
       title: 'SG-Kauf--Vue',
       dates: [],
       activeDateBuys: [],
-      buyItems,
       start: null
     };
   },
