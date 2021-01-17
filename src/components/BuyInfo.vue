@@ -1,38 +1,17 @@
 <template>
   <form class="buy-info">
     <div class="buy-info__date-and-time">
-      <input
-        class="form-control buy-info__date"
-        min="2018-11-01"
-        v-model="convertDate"
-        :readonly="!edit"
-        required
-        type="date"
-      />
-      <input
-        class="form-control buy-info__time"
-        v-model="time"
-        :readonly="!edit"
-        type="time"
-      />
+      <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
+      <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
     </div>
     <div class="buy-info__address">
-      <select
-        class="form-control custom-select buy-info__country"
-        v-model="country"
-      >
+      <select class="form-control custom-select buy-info__country" v-model="country">
         <option v-for="land in countries" :key="land">{{ land }}</option>
       </select>
-      <select
-        class="form-control custom-select buy-info__shop-name"
-        v-model="shopName"
-      >
+      <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
         <option v-for="name in shopNames" :key="name">{{ name }}</option>
       </select>
-      <select
-        class="form-control custom-select buy-info__index"
-        v-model="index"
-      >
+      <select class="form-control custom-select buy-info__index" v-model="index">
         <option v-for="i in indexes" :key="i">{{ i }}</option>
       </select>
       <select class="form-control custom-select buy-info__city" v-model="city">
@@ -63,13 +42,11 @@
 <script>
 export default {
   name: "buy-info",
-  props: {
-    info: Object,
-    isDefault: Boolean,
-  },
   data() {
-    const inf = {
-      ...this.info,
+    const infoProps = {...this.info};
+    let data = {}; // new data object
+
+    const defaultInfo = {
       edit: true,
       countries: ["Germany", "Russia"],
       cities: ["Hamburg", "Moscow", "Saransk"],
@@ -81,7 +58,28 @@ export default {
       payMethods: ["EC card", "Cash"],
     };
 
-    return inf;
+    data = Object.assign({}, defaultInfo, infoProps);
+    console.log('info data : ', data);
+
+    return data;
+  },
+  props: {
+    info: Object,
+    isDefault: Boolean,
+  },
+  watch: {
+      info(newInfo) {
+          this.date = newInfo.date;
+          this.time = newInfo.time;
+          this.currency = newInfo.currency;
+          this.country = newInfo.country;
+          this.city = newInfo.city;
+          this.index = newInfo.index;
+          this.street = newInfo.street;
+          this.houseNumber = newInfo.houseNumber;
+          this.payMethod = newInfo.payMethod;
+          this.shopName = newInfo.shopName;
+      }
   },
   computed: {
     convertDate: {
@@ -96,8 +94,8 @@ export default {
         const normalizedDate = newDate.split("-").reverse().join(".");
 
         this.date = normalizedDate;
-      },
-    },
+      }
+    }
   },
   methods: {
     saveBuy() {
@@ -171,7 +169,7 @@ export default {
           console.log("Fetch Error :-S", err);
         });
     },
-  },
+  }
 }; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>
 

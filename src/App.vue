@@ -92,7 +92,7 @@ export default {
             }
 
             response.json().then(function(data) {
-              thisApp.activeDateBuys = [...data];
+              thisApp.activeDateBuys = data;
             });
           }
         )
