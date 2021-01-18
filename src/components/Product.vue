@@ -1,51 +1,46 @@
 <template>
-    <div class="buy buy--default" v-if="isDefault">
-        <buy-info :info="infoFromBuy" :isDefault="isDefault" />
-        <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
+    <div class="product product--default" v-if="isDefault">
+        <product-info :info="infoFromProduct" :isDefault="isDefault" />
+        <!-- <span class="badge bg-primary rounded-pill product__badge">{{item.products ? item.products.length: 0 }}</span> -->
     </div>
-    <li class="buy" v-else>
-        <buy-info :info="infoFromBuy" :isDefault="isDefault" />
+    <li class="product" v-else>
+        <product-info :info="infoFromProduct" :isDefault="isDefault" />
     </li>
 </template>
 
 <script>
-import BuyInfo from './BuyInfo.vue';
+import ProductInfo from './ProductInfo.vue';
 
 export default {
-  name: 'buy', 
+  name: 'product', 
   props: {
-    buy: Object,
+    product: Object,
     isDefault: Boolean
   },
   computed: {
-      infoFromBuy() {
-          const buy = this.buy;
+      infoFromProduct() {
+          const product = this.product;
           const info = {
-            date: buy.date, 
-            time: buy.time, 
-            currency: buy.currency,
-            country: buy.country, 
-            city: buy.address.city,
-            index: buy.address.index,
-            street: buy.address.street,
-            houseNumber: buy.address.houseNumber,
-            payMethod: buy.payMethod,
-            shopName: buy.shopName,
-            products: buy.products
+            name: product.name, 
+            weightAmount: product.weightAmount, 
+            measure: product.measure,
+            price: product.price, 
+            description: product.description,
+            discount: product.discount
         };
 
         return info;
       }
   }, 
   components: {
-    BuyInfo
+    ProductInfo
   }
 } // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>
 
 <style scoped lang="scss">
-    .buy {
-        counter-increment: buy-counter;
+    .product {
+        counter-increment: product-counter;
         padding-left: 2rem;
         margin-bottom: .5rem;
 
@@ -57,7 +52,7 @@ export default {
             margin-left: 2rem;
             margin-bottom: 1.5rem;
             
-            .buy-info::before {
+            .product-info::before {
                 content: none;
             }
         }

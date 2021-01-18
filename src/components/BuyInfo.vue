@@ -1,45 +1,54 @@
 <template>
-  <form class="buy-info">
-    <div class="buy-info__date-and-time">
-      <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
-      <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
+  <form class="container-fluid">
+    <div class="row">
+        <div class="col buy-info">
+            <div class="buy-info__date-and-time">
+            <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
+            <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
+            </div>
+            <div class="buy-info__address">
+            <select class="form-control custom-select buy-info__country" v-model="country">
+                <option v-for="land in countries" :key="land">{{ land }}</option>
+            </select>
+            <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
+                <option v-for="name in shopNames" :key="name">{{ name }}</option>
+            </select>
+            <select class="form-control custom-select buy-info__index" v-model="index">
+                <option v-for="i in indexes" :key="i">{{ i }}</option>
+            </select>
+            <select class="form-control custom-select buy-info__city" v-model="city">
+                <option v-for="place in cities" :key="place">{{ place }}</option>
+            </select>
+            <select class="form-control custom-select buy-info__street" v-model="street">
+                <option v-for="str in streets" :key="str">{{ str }}</option>
+            </select>
+            <select class="form-control custom-select buy-info__houseNumber" v-model="houseNumber">
+                <option v-for="houseNr in houseNumbers" :key="houseNr">
+                {{ houseNr }}
+                </option>
+            </select>
+            </div>
+            <select class="form-control custom-select buy-info__currency" v-model="currency">
+            <option v-for="currencyValue in currencies" :key="currencyValue">
+                {{ currencyValue }}
+            </option>
+            </select>
+            <select class="form-control custom-select buy-info__pay-method" v-model="payMethod">
+            <option v-for="method in payMethods" :key="method">{{ method }}</option>
+            </select>
+            <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeBuy"></button>
+            <button class="btn btn-primary btn-sm" @click="saveBuy">Submit</button>
+        </div>
     </div>
-    <div class="buy-info__address">
-      <select class="form-control custom-select buy-info__country" v-model="country">
-        <option v-for="land in countries" :key="land">{{ land }}</option>
-      </select>
-      <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
-        <option v-for="name in shopNames" :key="name">{{ name }}</option>
-      </select>
-      <select class="form-control custom-select buy-info__index" v-model="index">
-        <option v-for="i in indexes" :key="i">{{ i }}</option>
-      </select>
-      <select class="form-control custom-select buy-info__city" v-model="city">
-        <option v-for="place in cities" :key="place">{{ place }}</option>
-      </select>
-      <select class="form-control custom-select buy-info__street" v-model="street">
-        <option v-for="str in streets" :key="str">{{ str }}</option>
-      </select>
-      <select class="form-control custom-select buy-info__houseNumber" v-model="houseNumber">
-        <option v-for="houseNr in houseNumbers" :key="houseNr">
-          {{ houseNr }}
-        </option>
-      </select>
+    <div class="row">
+        <product-list :buyProducts="products" />
     </div>
-    <select class="form-control custom-select buy-info__currency" v-model="currency">
-      <option v-for="currencyValue in currencies" :key="currencyValue">
-        {{ currencyValue }}
-      </option>
-    </select>
-    <select class="form-control custom-select buy-info__pay-method" v-model="payMethod">
-      <option v-for="method in payMethods" :key="method">{{ method }}</option>
-    </select>
-    <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeBuy"></button>
-    <button class="btn btn-primary btn-sm" @click="saveBuy">Submit</button>
   </form>
 </template>
 
 <script>
+import ProductList from './ProductList.vue';
+
 export default {
   name: "buy-info",
   data() {
@@ -55,7 +64,7 @@ export default {
       indexes: ["22307"],
       houseNumbers: ["387"],
       currencies: ["EUR", "RUB"],
-      payMethods: ["EC card", "Cash"],
+      payMethods: ["EC card", "Cash"]
     };
 
     data = Object.assign({}, defaultInfo, infoProps);
@@ -79,6 +88,7 @@ export default {
           this.houseNumber = newInfo.houseNumber;
           this.payMethod = newInfo.payMethod;
           this.shopName = newInfo.shopName;
+          this.products = newInfo.products;
       }
   },
   computed: {
@@ -98,77 +108,81 @@ export default {
     }
   },
   methods: {
-    saveBuy() {
-      let thisApp = this;
-      let date = thisApp.date;
-      let time = thisApp.time;
-      let currency = thisApp.currency;
-      let country = thisApp.country;
-      let city = thisApp.city;
-      let index = thisApp.index;
-      let street = thisApp.street;
-      let houseNumber = thisApp.houseNumber;
-      let payMethod = thisApp.payMethod;
-      let shopName = thisApp.shopName;
-      let url = `http://localhost:3030/save-buy?date=${date}&time=${time}`;
-      url += currency ? `&currency=${currency}` : "";
-      url += country ? `&country=${country}` : "";
-      url += city ? `&city=${city}` : "";
-      url += index ? `&index=${index}` : "";
-      url += street ? `&street=${street}` : "";
-      url += houseNumber ? `&houseNumber=${houseNumber}` : "";
-      url += payMethod ? `&payMethod=${payMethod}` : "";
-      url += shopName ? `&shopName=${shopName}` : "";
+    // saveBuy() {
+    //   let thisApp = this;
+    //   let date = thisApp.date;
+    //   let time = thisApp.time;
+    //   let currency = thisApp.currency;
+    //   let country = thisApp.country;
+    //   let city = thisApp.city;
+    //   let index = thisApp.index;
+    //   let street = thisApp.street;
+    //   let houseNumber = thisApp.houseNumber;
+    //   let payMethod = thisApp.payMethod;
+    //   let shopName = thisApp.shopName;
+    //   let products = thisApp.products;
+    //   let url = `http://localhost:3030/save-buy?date=${date}&time=${time}`;
+    //   url += currency ? `&currency=${currency}` : "";
+    //   url += country ? `&country=${country}` : "";
+    //   url += city ? `&city=${city}` : "";
+    //   url += index ? `&index=${index}` : "";
+    //   url += street ? `&street=${street}` : "";
+    //   url += houseNumber ? `&houseNumber=${houseNumber}` : "";
+    //   url += payMethod ? `&payMethod=${payMethod}` : "";
+    //   url += shopName ? `&shopName=${shopName}` : "";
 
-      // console.log('RAW url >: ', url);
-      // url = encodeURIComponent(url);
+    //   // console.log('RAW url >: ', url);
+    //   // url = encodeURIComponent(url);
 
-      console.log("url >: ", url);
+    //   console.log("url >: ", url);
 
-      fetch(url)
-        .then((response) => {
-          if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
+    //   fetch(url)
+    //     .then((response) => {
+    //       if (response.status !== 200) {
+    //         console.log(
+    //           "Looks like there was a problem. Status Code: " + response.status
+    //         );
+    //         return;
+    //       }
 
-          response.json().then(function (data) {
-            console.log("RESP data: ", data);
-            thisApp.activeDateBuys = [...data];
-          });
-        })
-        .catch(function (err) {
-          console.log("Fetch Error :-S", err);
-        });
-    },
-    removeBuy() {
-      let thisApp = this;
-      let date = thisApp.date;
-      let time = thisApp.time;
-      let url = `http://localhost:3030/remove-buy?date=${date}&time=${time}`;
+    //       response.json().then(function (data) {
+    //         console.log("RESP data: ", data);
+    //         thisApp.activeDateBuys = [...data];
+    //       });
+    //     })
+    //     .catch(function (err) {
+    //       console.log("Fetch Error :-S", err);
+    //     });
+    // },
+    // removeBuy() {
+    //   let thisApp = this;
+    //   let date = thisApp.date;
+    //   let time = thisApp.time;
+    //   let url = `http://localhost:3030/remove-buy?date=${date}&time=${time}`;
 
-      console.log("url >: ", url);
+    //   console.log("url >: ", url);
 
-      fetch(url)
-        .then((response) => {
-          if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
+    //   fetch(url)
+    //     .then((response) => {
+    //       if (response.status !== 200) {
+    //         console.log(
+    //           "Looks like there was a problem. Status Code: " + response.status
+    //         );
+    //         return;
+    //       }
 
-          response.json().then(function (data) {
-            console.log("REMOVE data: ", data);
-            // console.log("REMOVE data: ", data);
-          });
-        })
-        .catch(function (err) {
-          console.log("Fetch Error :-S", err);
-        });
-    },
+    //       response.json().then(function (data) {
+    //         console.log("REMOVE data: ", data);
+    //         // console.log("REMOVE data: ", data);
+    //       });
+    //     })
+    //     .catch(function (err) {
+    //       console.log("Fetch Error :-S", err);
+    //     });
+    // },
+  },
+  components: {
+      ProductList
   }
 }; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>
