@@ -3,6 +3,7 @@
         <select class="form-control custom-select product-info__name" v-model="name">
           <option v-for="nameValue in names" :key="nameValue">{{ nameValue }}</option>
         </select>
+        <input class="form-control product-info__price" v-model="price" placeholder="Price" :readonly="!edit" required type="number" />
         <div class="product-info__weight-and-measure">
           <input class="form-control product-info__weight-amount" v-model="weightAmount" :readonly="!edit" type="number" />
           <select class="form-control custom-select product-info__measure" v-model="measure">
@@ -147,6 +148,9 @@ export default {
   &__name {
     width: 25rem;
     margin-right: 1.5rem;
+  }
+  &__price {
+    width: 6rem;
   }
   &__weight-and-measure{
     display: flex;
