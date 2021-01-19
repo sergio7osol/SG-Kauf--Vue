@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" v-show="!isDefault">
         <product-list :buyProducts="products" />
     </div>
   </form>
@@ -193,6 +193,7 @@ export default {
 .buy-info {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 
   &::before {
     content: counter(buy-counter) ".";

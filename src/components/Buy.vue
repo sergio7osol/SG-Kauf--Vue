@@ -1,15 +1,15 @@
 <template>
     <div class="card buy-list__card--default" v-if="isDefault">
-        <h5 class="card-header">Adding a new buy</h5>
+        <h5 class="card-header">New buy</h5>
         <div class="card-body">
             <div class="buy buy--default">
-                <buy-info :info="infoFromBuy" :isDefault="isDefault" />
+                <buy-info :info="infoFromBuy" :isDefault="true" />
                 <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
             </div>
         </div>
     </div>
     <li class="buy" v-else>
-        <buy-info :info="infoFromBuy" :isDefault="isDefault" />
+        <buy-info :info="infoFromBuy" :isDefault="false" />
     </li>
 </template>
 
@@ -75,9 +75,17 @@ export default {
     .buy-list__card {
       &--default {
         background-color: #efefef;
+        margin-bottom: 2rem;
 
-        .card-body {
-            padding: .8rem 0;
+        .card {
+            &-header {
+                text-align: left;
+                font-weight: bold;
+                color: #777;
+            }
+            &-body {
+                padding: .8rem 0;
+            }
         }
       }
     }
