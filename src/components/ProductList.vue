@@ -19,8 +19,8 @@ export default {
         description: "",
         weightAmount: "",
         measure: "piece",
-        price: 0,
-        discount: 0
+        price: null,
+        discount: null
       }
     }
   },
