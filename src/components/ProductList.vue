@@ -1,5 +1,5 @@
 <template>
-  <div class="col product-list pt-3 pl-5">
+  <div class="col product-list pt-3 pl-3">
     <product :product="emptyProduct" :isDefault="true" />
     <ul class="list-group list-group-flush product-list__items">
       <product v-for="(product, i) in buyProducts" :isDefault="false" :product="product" :key="i" />

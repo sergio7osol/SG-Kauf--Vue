@@ -9,35 +9,12 @@
               <option v-for="measureValue in measures" :key="measureValue">{{ measureValue }}</option>
           </select>
         </div>
-        <!-- <div class="product-info__address">
-          <select class="form-control custom-select product-info__shop-name" v-model="shopName">
-              <option v-for="name in shopNames" :key="name">{{ name }}</option>
-          </select>
-          <select class="form-control custom-select product-info__index" v-model="index">
-              <option v-for="i in indexes" :key="i">{{ i }}</option>
-          </select>
-          <select class="form-control custom-select product-info__city" v-model="city">
-              <option v-for="place in cities" :key="place">{{ place }}</option>
-          </select>
-          <select class="form-control custom-select product-info__street" v-model="street">
-              <option v-for="str in streets" :key="str">{{ str }}</option>
-          </select>
-          <select class="form-control custom-select product-info__houseNumber" v-model="houseNumber">
-              <option v-for="houseNr in houseNumbers" :key="houseNr">
-              {{ houseNr }}
-              </option>
-          </select>
+        <input class="form-control product-info__description" v-model="description" placeholder="Description" :readonly="!edit" type="text" />
+        <input class="form-control product-info__discount" v-model="discount" :readonly="!edit" type="number" />
+        <div class="product-info__buttons">
+          <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeProduct"></button>
+          <button class="btn btn-success btn-sm product-info__btn-add" @click="saveProduct">Add product</button>
         </div>
-        <select class="form-control custom-select product-info__currency" v-model="currency">
-        <option v-for="currencyValue in currencies" :key="currencyValue">
-            {{ currencyValue }}
-        </option>
-        </select>
-        <select class="form-control custom-select product-info__pay-method" v-model="payMethod">
-        <option v-for="method in payMethods" :key="method">{{ method }}</option>
-        </select> -->
-        <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeProduct"></button>
-        <button class="btn btn-primary btn-sm" @click="saveProduct">Submit</button>
     </form>
 </template>
 
@@ -153,6 +130,12 @@ export default {
 .product-info {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  padding: .5rem .7rem;
+
+  &:hover {
+    background-color: #efefef;
+  }
 
   &::before {
     content: counter(product-counter) ".";
@@ -162,63 +145,34 @@ export default {
   }
 
   &__name {
-    width: 15rem;
+    width: 25rem;
     margin-right: 1.5rem;
   }
   &__weight-and-measure{
     display: flex;
     margin-right: 1.5rem;
   }
+  &__weight-amount {
+    width: 6rem;
+  }
 
-  &__address {
+  &__description {
+    width: 15rem;
+  }
+
+  &__discount {
+    width: 6rem;
+  }
+
+  &__buttons {
+    width: 10rem;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
   }
-  &__country {
-    width: 9rem;
-  }
-  &__shop-name {
-    margin-right: 1.5rem;
-    width: 6rem;
-  }
-  &__city {
-    width: 8rem;
-  }
-  &__index {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: 6rem;
-  }
-  &__street {
-    white-space: nowrap;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: 11rem;
-  }
-  &__houseNumber {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: 6rem;
-    margin-right: 1.5rem;
-  }
-  &__currency {
-    width: auto;
-  }
-  &__pay-method {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    width: 7.3rem;
-    display: flex;
-    margin-right: 1.5rem;
-
-    &-check {
-      padding-left: 0;
-      margin-right: 0.5rem;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
+  &__btn-add {
+    width: 5.87rem;
+    margin-left: .4rem;
   }
 }
 
@@ -226,7 +180,10 @@ export default {
   &--icon {
     &-remove {
       font-size: 2rem;
+      line-height: 1.1;
       color: #f00;
+      padding-top: 0;
+      padding-bottom: 0;
       &:hover {
         color: lighten(#f00, 10%);
       }
