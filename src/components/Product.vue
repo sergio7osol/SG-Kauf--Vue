@@ -42,15 +42,9 @@ export default {
     .product {
         counter-increment: product-counter;
         padding-left: 2rem;
-        margin-bottom: .5rem;
-
-        &:hover {
-            background-color: #fefefe;
-        }
 
         &--default {
             margin-left: 2rem;
-            margin-bottom: 1.5rem;
             
             .product-info::before {
                 content: none;

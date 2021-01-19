@@ -1,0 +1,71 @@
+[
+    {
+        "date": "23.12.2020",
+        "time": "11:53",
+        "currency": "EUR",
+        "country": "Germany",
+        "address": {
+            "city": "Hamburg",
+            "index": "22307",
+            "street": "Fuhlsbuettler Str.",
+            "houseNumber": "387"
+        },
+        "payMethod": "EC card",
+        "shopName": "REWE",
+        "products": [
+            {
+                "name": "Pflaumenberliner",
+                "weightAmount": 1,
+                "measure": "piece",
+                "price": 1.70
+            },
+            {
+                "name": "Berliner",
+                "weightAmount": 1,
+                "measure": "piece",
+                "price": 1.50
+            },
+            {
+                "name": "Nußschnitte",
+                "weightAmount": 1,
+                "measure": "piece",
+                "price": 2.70
+            },
+            {
+                "name": "Rohlfs Rusti",
+                "weightAmount": 1,
+                "measure": "piece",
+                "price": 3.99,
+                "description": "750g"
+            }
+        ]
+    },
+    {
+        "date": "23.12.2020",
+        "time": "16:23",
+        "currency": "RUB",
+        "country": "Russia",
+        "address": {
+            "city": "Saransk",
+            "index": "22307",
+            "street": "Fuhlsbuettler Str.",
+            "houseNumber": "387"
+        },
+        "payMethod": "Cash",
+        "shopName": "REWE"
+    },
+    {
+        "date": "23.12.2020",
+        "time": "17:27",
+        "currency": "EUR",
+        "country": "Germany",
+        "address": {
+            "index": "22307",
+            "city": "Hamburg",
+            "street": "Fuhlsbuettler Str.",
+            "houseNumber": "387"
+        },
+        "payMethod": "EC card",
+        "shopName": "REWE"
+    }
+]

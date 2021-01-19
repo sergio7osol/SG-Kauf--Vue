@@ -3,41 +3,43 @@
     <div class="row">
         <div class="col buy-info">
             <div class="buy-info__date-and-time">
-            <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
-            <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
+                <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
+                <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
             </div>
             <div class="buy-info__address">
-            <select class="form-control custom-select buy-info__country" v-model="country">
-                <option v-for="land in countries" :key="land">{{ land }}</option>
-            </select>
-            <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
-                <option v-for="name in shopNames" :key="name">{{ name }}</option>
-            </select>
-            <select class="form-control custom-select buy-info__index" v-model="index">
-                <option v-for="i in indexes" :key="i">{{ i }}</option>
-            </select>
-            <select class="form-control custom-select buy-info__city" v-model="city">
-                <option v-for="place in cities" :key="place">{{ place }}</option>
-            </select>
-            <select class="form-control custom-select buy-info__street" v-model="street">
-                <option v-for="str in streets" :key="str">{{ str }}</option>
-            </select>
-            <select class="form-control custom-select buy-info__houseNumber" v-model="houseNumber">
-                <option v-for="houseNr in houseNumbers" :key="houseNr">
-                {{ houseNr }}
-                </option>
-            </select>
+                <select class="form-control custom-select buy-info__country" v-model="country">
+                    <option v-for="land in countries" :key="land">{{ land }}</option>
+                </select>
+                <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
+                    <option v-for="name in shopNames" :key="name">{{ name }}</option>
+                </select>
+                <select class="form-control custom-select buy-info__index" v-model="index">
+                    <option v-for="i in indexes" :key="i">{{ i }}</option>
+                </select>
+                <select class="form-control custom-select buy-info__city" v-model="city">
+                    <option v-for="place in cities" :key="place">{{ place }}</option>
+                </select>
+                <select class="form-control custom-select buy-info__street" v-model="street">
+                    <option v-for="str in streets" :key="str">{{ str }}</option>
+                </select>
+                <select class="form-control custom-select buy-info__houseNumber" v-model="houseNumber">
+                    <option v-for="houseNr in houseNumbers" :key="houseNr">
+                    {{ houseNr }}
+                    </option>
+                </select>
             </div>
             <select class="form-control custom-select buy-info__currency" v-model="currency">
-            <option v-for="currencyValue in currencies" :key="currencyValue">
-                {{ currencyValue }}
-            </option>
+                <option v-for="currencyValue in currencies" :key="currencyValue">
+                    {{ currencyValue }}
+                </option>
             </select>
             <select class="form-control custom-select buy-info__pay-method" v-model="payMethod">
-            <option v-for="method in payMethods" :key="method">{{ method }}</option>
+                <option v-for="method in payMethods" :key="method">{{ method }}</option>
             </select>
-            <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeBuy"></button>
-            <button class="btn btn-primary btn-sm" @click="saveBuy">Submit</button>
+            <div class="buy-info__buttons">
+                <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeBuy"></button>
+                <button class="btn btn-primary btn-sm buy-info__btn-add" @click="saveBuy">Add buy</button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -259,13 +261,31 @@ export default {
       }
     }
   }
+
+  &__buttons {
+        width: 10rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    &__btn-add {
+        width: 5.87rem;
+        margin-left: .4rem;
+    }
 }
 
+.buy--default .buy-info::before { content: none; }
+.card {
+    background-color: #ddd !important;
+}
 .btn {
   &--icon {
     &-remove {
       font-size: 2rem;
       color: #f00;
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: 1.1;
       &:hover {
         color: lighten(#f00, 10%);
       }
