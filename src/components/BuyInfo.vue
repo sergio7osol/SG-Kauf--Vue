@@ -3,47 +3,47 @@
     <div class="row">
         <div class="col buy-info">
             <div class="buy-info__date-and-time">
-                <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" :readonly="!edit" required type="date" />
-                <input class="form-control buy-info__time" v-model="time" :readonly="!edit" type="time" />
+                <input class="form-control buy-info__date" min="2018-11-01" v-model="localDate" :readonly="!edit" required type="date" />
+                <input class="form-control buy-info__time" v-model="buyTime" :readonly="!edit" type="time" />
             </div>
             <div class="buy-info__address">
-                <select class="form-control custom-select buy-info__country" v-model="country">
-                    <option v-for="land in countries" :key="land">{{ land }}</option>
+                <select class="form-control custom-select buy-info__country" v-model="localCountry">
+                    <option v-for="land in ValueCollection.countries" :key="land">{{ land }}</option>
                 </select>
-                <select class="form-control custom-select buy-info__shop-name" v-model="shopName">
-                    <option v-for="name in shopNames" :key="name">{{ name }}</option>
+                <select class="form-control custom-select buy-info__shop-name" v-model="localShopName">
+                    <option v-for="name in ValueCollection.shopNames" :key="name">{{ name }}</option>
                 </select>
-                <select class="form-control custom-select buy-info__index" v-model="index">
-                    <option v-for="i in indexes" :key="i">{{ i }}</option>
+                <select class="form-control custom-select buy-info__index" v-model="localIndex">
+                    <option v-for="i in ValueCollection.indexes" :key="i">{{ i }}</option>
                 </select>
-                <select class="form-control custom-select buy-info__city" v-model="city">
-                    <option v-for="place in cities" :key="place">{{ place }}</option>
+                <select class="form-control custom-select buy-info__city" v-model="localCity">
+                    <option v-for="place in ValueCollection.cities" :key="place">{{ place }}</option>
                 </select>
-                <select class="form-control custom-select buy-info__street" v-model="street">
-                    <option v-for="str in streets" :key="str">{{ str }}</option>
+                <select class="form-control custom-select buy-info__street" v-model="localStreet">
+                    <option v-for="str in ValueCollection.streets" :key="str">{{ str }}</option>
                 </select>
-                <select class="form-control custom-select buy-info__houseNumber" v-model="houseNumber">
-                    <option v-for="houseNr in houseNumbers" :key="houseNr">
+                <select class="form-control custom-select buy-info__houseNumber" v-model="localHouseNumber">
+                    <option v-for="houseNr in ValueCollection.houseNumbers" :key="houseNr">
                     {{ houseNr }}
                     </option>
                 </select>
             </div>
-            <select class="form-control custom-select buy-info__currency" v-model="currency">
-                <option v-for="currencyValue in currencies" :key="currencyValue">
+            <select class="form-control custom-select buy-info__currency" v-model="localCurrency">
+                <option v-for="currencyValue in ValueCollection.currencies" :key="currencyValue">
                     {{ currencyValue }}
                 </option>
             </select>
-            <select class="form-control custom-select buy-info__pay-method" v-model="payMethod">
-                <option v-for="method in payMethods" :key="method">{{ method }}</option>
+            <select class="form-control custom-select buy-info__pay-method" v-model="localPayMethod">
+                <option v-for="method in ValueCollection.payMethods" :key="method">{{ method }}</option>
             </select>
-            <div class="buy-info__buttons">
+            <div class="buy-info__buttons"> 
                 <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeBuy"></button>
                 <button class="btn btn-primary btn-sm buy-info__btn-add" @click="saveBuy">Add buy</button>
             </div>
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="products" />
+        <product-list :buyProducts="localProducts" />
     </div>
   </form>
 </template>
@@ -51,52 +51,93 @@
 <script>
 import ProductList from './ProductList.vue';
 
+const ValueCollection = {
+    countries: ["Germany", "Russia"],
+    cities: ["Hamburg", "Moscow", "Saransk"],
+    streets: ["Fuhlsbuettler Str."],
+    shopNames: ["REWE"], 
+    indexes: ["22307"],
+    houseNumbers: ["387"],
+    currencies: ["EUR", "RUB"],
+    payMethods: ["EC card", "Cash"]
+};
+
 export default {
   name: "buy-info",
   data() {
-    const infoProps = {...this.info};
-    let data = {}; // new data object
-
-    const defaultInfo = {
-      edit: true,
-      countries: ["Germany", "Russia"],
-      cities: ["Hamburg", "Moscow", "Saransk"],
-      streets: ["Fuhlsbuettler Str."],
-      shopNames: ["REWE"],
-      indexes: ["22307"],
-      houseNumbers: ["387"],
-      currencies: ["EUR", "RUB"],
-      payMethods: ["EC card", "Cash"]
+    return {
+        localDate: this.date,
+        localTime: this.time,
+        localCurrency: this.currency,
+        localCountry: this.country,
+        localCity: this.city,
+        localIndex: this.index,
+        localStreet: this.street,
+        localHouseNumber: this.houseNumber,
+        localPayMethod: this.payMethod,
+        localShopName: this.shopName,
+        localProducts: this.products
     };
-
-    data = Object.assign({}, defaultInfo, infoProps);
-    console.log('info data : ', data);
-
-    return data;
   },
   props: {
-    info: Object,
-    isDefault: Boolean,
+    date: {
+        type: String,
+        required: true
+    },
+    time: {
+        type: String,
+        required: true
+    },
+    currency: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.currencies.indexOf(value) !== -1;
+        }
+    },
+    country: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.countries.indexOf(value) !== -1;
+        }
+    },
+    city: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.cities.indexOf(value) !== -1;
+        }
+    },
+    index: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.indexes.indexOf(value) !== -1;
+        }
+    },
+    street: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.streets.indexOf(value) !== -1;
+        }
+    },
+    houseNumber: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.houseNumbers.indexOf(value) !== -1;
+        }
+    },
+    payMethod: {
+        type: String,
+        validator: function(value) {
+            return ValueCollection.shopNames.indexOf(value) !== -1;
+        }
+    },
+    isDefault: Boolean
   },
   watch: {
-      info(newInfo) {
-          this.date = newInfo.date;
-          this.time = newInfo.time;
-          this.currency = newInfo.currency;
-          this.country = newInfo.country;
-          this.city = newInfo.city;
-          this.index = newInfo.index;
-          this.street = newInfo.street;
-          this.houseNumber = newInfo.houseNumber;
-          this.payMethod = newInfo.payMethod;
-          this.shopName = newInfo.shopName;
-          this.products = newInfo.products;
-      }
   },
   computed: {
     convertDate: {
       get() {
-        const currentDate = this.date;
+        const currentDate = this.localDate;
         const normalizedDate = currentDate.split(".").reverse().join("-");
 
         return normalizedDate;
@@ -105,64 +146,64 @@ export default {
         const newDate = v;
         const normalizedDate = newDate.split("-").reverse().join(".");
 
-        this.date = normalizedDate;
+        this.localDate = normalizedDate;
       }
     }
   },
   methods: {
-    // saveBuy() {
+    saveBuy() {
+      let thisApp = this;
+      let date = this.localDate;
+      let time = this.localTime;
+      let currency = this.localCurrency;
+      let country = this.localCountry;
+      let city = this.localCity;
+      let index = this.localIndex;
+      let street = this.localStreet;
+      let houseNumber = this.localHouseNumber;
+      let payMethod = this.localPayMethod;
+      let shopName = this.localShopName;
+    //   let products = this.localProducts;
+
+      let url = `http://localhost:3030/save-buy?date=${date}&time=${time}`;
+      url += currency ? `&currency=${currency}` : "";
+      url += country ? `&country=${country}` : "";
+      url += city ? `&city=${city}` : "";
+      url += index ? `&index=${index}` : "";
+      url += street ? `&street=${street}` : "";
+      url += houseNumber ? `&houseNumber=${houseNumber}` : "";
+      url += payMethod ? `&payMethod=${payMethod}` : "";
+      url += shopName ? `&shopName=${shopName}` : "";
+
+      console.log('RAW url >: ', url);
+    //   url = encodeURIComponent(url);
+    //   console.log('url >: ', url);
+
+      fetch(url)
+        .then((response) => {
+          if (response.status !== 200) {
+            console.log(
+              "Looks like there was a problem. Status Code: " + response.status
+            );
+            return;
+          }
+
+          response.json().then(function (data) {
+            console.log("RESP data: ", data);
+            thisApp.activeDateBuys = [...data];
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetch Error :-S", err);
+        });
+    },
+    removeBuy() {
     //   let thisApp = this;
-    //   let date = thisApp.date;
-    //   let time = thisApp.time;
-    //   let currency = thisApp.currency;
-    //   let country = thisApp.country;
-    //   let city = thisApp.city;
-    //   let index = thisApp.index;
-    //   let street = thisApp.street;
-    //   let houseNumber = thisApp.houseNumber;
-    //   let payMethod = thisApp.payMethod;
-    //   let shopName = thisApp.shopName;
-    //   let products = thisApp.products;
-    //   let url = `http://localhost:3030/save-buy?date=${date}&time=${time}`;
-    //   url += currency ? `&currency=${currency}` : "";
-    //   url += country ? `&country=${country}` : "";
-    //   url += city ? `&city=${city}` : "";
-    //   url += index ? `&index=${index}` : "";
-    //   url += street ? `&street=${street}` : "";
-    //   url += houseNumber ? `&houseNumber=${houseNumber}` : "";
-    //   url += payMethod ? `&payMethod=${payMethod}` : "";
-    //   url += shopName ? `&shopName=${shopName}` : "";
+      let date = this.localDate;
+      let time = this.localTime;
+      let url = `http://localhost:3030/remove-buy?date=${date}&time=${time}`;
 
-    //   // console.log('RAW url >: ', url);
-    //   // url = encodeURIComponent(url);
-
-    //   console.log("url >: ", url);
-
-    //   fetch(url)
-    //     .then((response) => {
-    //       if (response.status !== 200) {
-    //         console.log(
-    //           "Looks like there was a problem. Status Code: " + response.status
-    //         );
-    //         return;
-    //       }
-
-    //       response.json().then(function (data) {
-    //         console.log("RESP data: ", data);
-    //         thisApp.activeDateBuys = [...data];
-    //       });
-    //     })
-    //     .catch(function (err) {
-    //       console.log("Fetch Error :-S", err);
-    //     });
-    // },
-    // removeBuy() {
-    //   let thisApp = this;
-    //   let date = thisApp.date;
-    //   let time = thisApp.time;
-    //   let url = `http://localhost:3030/remove-buy?date=${date}&time=${time}`;
-
-    //   console.log("url >: ", url);
+      console.log("url >: ", url);
 
     //   fetch(url)
     //     .then((response) => {
@@ -181,9 +222,9 @@ export default {
     //     .catch(function (err) {
     //       console.log("Fetch Error :-S", err);
     //     });
-    // },
+    }
   },
-  components: {
+  components: { 
       ProductList
   }
 }; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };

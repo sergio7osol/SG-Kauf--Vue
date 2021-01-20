@@ -1,6 +1,6 @@
 <template>
   <div class="buy-list pt-3">
-    <buy :isDefault="true" :buy="emptyBuy" />
+    <buy :buy="emptyBuy" isDefault />
     <ul class="list-group list-group-flush buy-list__items">
       <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="i" />
     </ul>
