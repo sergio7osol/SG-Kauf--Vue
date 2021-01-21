@@ -3,8 +3,8 @@
     <div class="row">
         <div class="col buy-info">
             <div class="buy-info__date-and-time">
-                <input class="form-control buy-info__date" min="2018-11-01" v-model="localDate" :readonly="!edit" required type="date" />
-                <input class="form-control buy-info__time" v-model="buyTime" :readonly="!edit" type="time" />
+                <input class="form-control buy-info__date" min="2018-11-01" v-model="convertDate" required type="date" />
+                <input class="form-control buy-info__time" v-model="localTime" type="time" />
             </div>
             <div class="buy-info__address">
                 <select class="form-control custom-select buy-info__country" v-model="localCountry">
@@ -51,21 +51,10 @@
 <script>
 import ProductList from './ProductList.vue';
 
-const ValueCollection = {
-    countries: ["Germany", "Russia"],
-    cities: ["Hamburg", "Moscow", "Saransk"],
-    streets: ["Fuhlsbuettler Str."],
-    shopNames: ["REWE"], 
-    indexes: ["22307"],
-    houseNumbers: ["387"],
-    currencies: ["EUR", "RUB"],
-    payMethods: ["EC card", "Cash"]
-};
-
 export default {
   name: "buy-info",
   data() {
-    return {
+    const dataState = {
         localDate: this.date,
         localTime: this.time,
         localCurrency: this.currency,
@@ -76,13 +65,27 @@ export default {
         localHouseNumber: this.houseNumber,
         localPayMethod: this.payMethod,
         localShopName: this.shopName,
-        localProducts: this.products
+        localProducts: this.products,
+        ValueCollection: {
+            countries: ["Germany", "Russia"],
+            shopNames: ["REWE"], 
+            indexes: ["22307"],
+            cities: ["Hamburg", "Moscow", "Saransk"],
+            streets: ["Fuhlsbuettler Str."],
+            houseNumbers: ["387"],
+            currencies: ["EUR", "RUB"],
+            payMethods: ["EC card", "Cash"]
+        }
     };
+
+    console.log('dataState: ', dataState);
+
+    return dataState;
   },
   props: {
     date: {
         type: String,
-        required: true
+        // required: this.isDefault ? false : true // TODO
     },
     time: {
         type: String,
@@ -91,43 +94,49 @@ export default {
     currency: {
         type: String,
         validator: function(value) {
-            return ValueCollection.currencies.indexOf(value) !== -1;
+            return ["EUR", "RUB"].indexOf(value) !== -1;
         }
     },
     country: {
         type: String,
         validator: function(value) {
-            return ValueCollection.countries.indexOf(value) !== -1;
+            return ["Germany", "Russia"].indexOf(value) !== -1;
         }
     },
     city: {
         type: String,
         validator: function(value) {
-            return ValueCollection.cities.indexOf(value) !== -1;
+            return ["Hamburg", "Moscow", "Saransk"].indexOf(value) !== -1;
         }
     },
     index: {
         type: String,
         validator: function(value) {
-            return ValueCollection.indexes.indexOf(value) !== -1;
+            return ["22307"].indexOf(value) !== -1;
         }
     },
     street: {
         type: String,
         validator: function(value) {
-            return ValueCollection.streets.indexOf(value) !== -1;
+            return ["Fuhlsbuettler Str."].indexOf(value) !== -1;
         }
     },
     houseNumber: {
         type: String,
         validator: function(value) {
-            return ValueCollection.houseNumbers.indexOf(value) !== -1;
+            return ["387"].indexOf(value) !== -1;
         }
     },
     payMethod: {
         type: String,
         validator: function(value) {
-            return ValueCollection.shopNames.indexOf(value) !== -1;
+            return ["EC card", "Cash"].indexOf(value) !== -1;
+        }
+    },
+    shopName: {
+        type: String,
+        validator: function(value) {
+            return ["REWE"].indexOf(value) !== -1;
         }
     },
     isDefault: Boolean
