@@ -3,13 +3,13 @@
         <h5 class="card-header">New buy</h5>
         <div class="card-body">
             <div class="buy buy--default">
-                <buy-info v-bind="buy" :isDefault="true" />
+                <buy-info v-bind="infoFromBuy" isDefault />
                 <!-- <span class="badge bg-primary rounded-pill buy__badge">{{item.products ? item.products.length: 0 }}</span> -->
             </div>
         </div>
     </div>
     <li class="buy" v-else>
-        <buy-info :info="infoFromBuy" />
+        <buy-info v-bind="infoFromBuy" />
     </li>
 </template>
 
@@ -23,12 +23,27 @@ export default {
         type: Object,
         required: true
     },
-    isDefault: {
-        type: Boolean,
-        default: false
-    }
+    isDefault: Boolean
   },
   computed: {
+      infoFromBuy() {
+          const buy = this.buy;
+          const info = {
+            date: buy.date, 
+            time: buy.time, 
+            currency: buy.currency,
+            country: buy.country, 
+            city: buy.address.city,
+            index: buy.address.index,
+            street: buy.address.street,
+            houseNumber: buy.address.houseNumber,
+            payMethod: buy.payMethod,
+            shopName: buy.shopName,
+            products: buy.products
+        };
+
+        return info;
+      }
   }, 
   components: {
     BuyInfo
