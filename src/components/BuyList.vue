@@ -2,7 +2,7 @@
   <div class="buy-list pt-3">
     <buy :buy="emptyBuy" isDefault />
     <ul class="list-group list-group-flush buy-list__items">
-      <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="i" />
+      <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="Date.now() + i" />
     </ul>
   </div>
 </template>
