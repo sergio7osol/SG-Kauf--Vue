@@ -214,23 +214,29 @@ export default {
 
       console.log("url >: ", url);
 
-    //   fetch(url)
-    //     .then((response) => {
-    //       if (response.status !== 200) {
-    //         console.log(
-    //           "Looks like there was a problem. Status Code: " + response.status
-    //         );
-    //         return;
-    //       }
+        if (confirm('You sure, you want to delete this buy?')) {
 
-    //       response.json().then(function (data) {
-    //         console.log("REMOVE data: ", data);
-    //         // console.log("REMOVE data: ", data);
-    //       });
-    //     })
-    //     .catch(function (err) {
-    //       console.log("Fetch Error :-S", err);
-    //     });
+            console.log(`Prompted deleting of the buy. Confirmed. The buy on ${date} at ${time} is going to be deleted...`);
+        } else {
+            console.log(`Prompted deleting of the buy. Rejected. The buy on ${date} at ${time} is NOT going to be deleted.`);
+            return false;
+        }
+
+      fetch(url)
+        .then((response) => {
+          if (response.status !== 200) {
+            console.log("Looks like there was a problem. Status Code: " + response.status);
+            return;
+          }
+
+          response.json().then(function (data) {
+            // thisApp.activeDateBuys = [...data]; // TODO: emit
+            console.log(`The buy on ${date} at ${time} was successfully removed.`, data);
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetch Error :-S", err);
+        });
     }
   },
   components: { 
