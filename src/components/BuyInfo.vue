@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="localProducts" />
+        <product-list :buyProducts="localProducts" @save-product="saveProduct"/>
     </div>
   </form>
 </template>
@@ -138,6 +138,12 @@ export default {
         validator: function(value) {
             return ["REWE"].indexOf(value) !== -1;
         }
+    },
+    products: {
+        type: Array,
+        // validator: function(value) {
+        //     return ["REWE"].indexOf(value) !== -1;
+        // }
     },
     isDefault: Boolean
   },
@@ -237,6 +243,38 @@ export default {
         .catch(function (err) {
           console.log("Fetch Error :-S", err);
         });
+    },
+    saveProduct(product) {
+        const thisApp = this;
+        const date = this.localDate;
+        const time = this.localTime;
+        const { name, price, weightAmount, measure, description, discount } = product;
+        let url = `http://localhost:3030/save-product?date=${date}&time=${time}`;
+        url += name ? `&name=${name}` : '';
+        url += price ? `&price=${price}` : '';
+        url += weightAmount ? `&weightAmount=${weightAmount}` : '';
+        url += measure ? `&measure=${measure}` : '';
+        url += description ? `&description=${description}` : '';
+        url += discount ? `&discount=${discount}` : '';
+
+        console.log('RAW url >: ', url);
+      // url = encodeURIComponent(url);
+
+        fetch(url)
+            .then((response) => {
+                if (response.status !== 200) {
+                    console.log("Looks like there was a problem. Status Code: " + response.status);
+                    return;
+                }
+
+                response.json().then(function (data) {
+                    console.log('Arrived products for updating: ', data);
+                    thisApp.localProducts = data;
+                });
+            })
+            .catch(function (err) {
+                console.log("Fetch Error :-S", err);
+            });
     }
   },
   components: { 
