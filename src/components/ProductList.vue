@@ -1,8 +1,8 @@
 <template>
   <div class="col product-list pt-3 pl-3">
-    <product :product="emptyProduct" :isDefault="true" />
+    <product :product="emptyProduct" :isDefault="true" @save-product="retriggerSendProductToSave" :key="emptyProduct.measure + Date.now()" /> <!-- :key added, so that the product component always rerenders -->
     <ul class="list-group list-group-flush product-list__items">
-      <product v-for="(product, i) in buyProducts" :isDefault="false" :product="product" :key="i" />
+      <product v-for="(product, i) in buyProducts" :isDefault="false" :product="product" :key="product.name + Date.now() + i" /> 
     </ul>
   </div>
 </template>
@@ -15,9 +15,9 @@ export default {
   data() {
     return {
       emptyProduct: {
-        name: "",
+        name: null,
         description: "",
-        weightAmount: "",
+        weightAmount: null,
         measure: "piece",
         price: null,
         discount: null
@@ -26,6 +26,13 @@ export default {
   },
   props: {
     buyProducts: Array
+  },
+  emits: ['save-product'],
+  methods: {
+    retriggerSendProductToSave(product) {
+          console.log('product-list: ', product);
+          this.$emit('save-product', product);
+      }
   },
   components: {
     Product

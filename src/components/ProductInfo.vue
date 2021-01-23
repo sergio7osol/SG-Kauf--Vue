@@ -1,20 +1,20 @@
 <template>
     <form class="col product-info">
-        <select class="form-control custom-select product-info__name" v-model="name">
-          <option v-for="nameValue in names" :key="nameValue">{{ nameValue }}</option>
+        <select class="form-control custom-select product-info__name" v-model="localName">
+          <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
         </select>
-        <input class="form-control product-info__price" v-model="price" placeholder="Price" :readonly="!edit" required type="number" />
+        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" type="number" />
         <div class="product-info__weight-and-measure">
-          <input class="form-control product-info__weight-amount" v-model="weightAmount" :readonly="!edit" type="number" />
-          <select class="form-control custom-select product-info__measure" v-model="measure">
-              <option v-for="measureValue in measures" :key="measureValue">{{ measureValue }}</option>
+          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" type="number" />
+          <select class="form-control custom-select product-info__measure" v-model="localMeasure">
+              <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
           </select>
         </div>
-        <input class="form-control product-info__description" v-model="description" placeholder="Description" :readonly="!edit" type="text" />
-        <input class="form-control product-info__discount" v-model="discount" :readonly="!edit" type="number" />
+        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" type="text" />
+        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" type="number" />
         <div class="product-info__buttons">
           <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeProduct"></button>
-          <button class="btn btn-success btn-sm product-info__btn-add" @click="saveProduct">Add product</button>
+          <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave">Save product</button>
         </div>
     </form>
 </template>
@@ -23,106 +23,78 @@
 export default {
   name: "product-info",
   data() {
-    const infoProps = {...this.info};
-    let data = {}; // new data object
+    const dataState = {
+        localName: this.name,
+        localDescription: this.description,
+        localWeightAmount: this.weightAmount,
+        localMeasure: this.measure,
+        localPrice: this.price,
+        localDiscount: this.discount,
+        ValueCollection: {
+          names: ['Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti'],
+          measures: ["piece", "kg"]      
+        }
+      };
 
-    const defaultInfo = {
-      edit: true,
-      names: ['Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti'],
-      measures: ["piece", "kg"]      
-    };
-
-    data = Object.assign({}, defaultInfo, infoProps);
-    console.log('info data : ', data);
-
-    return data;
+      return dataState;
   },
   props: {
-    info: Object,
     isDefault: Boolean,
-  },
-  watch: {
-      info(newInfo) {
-          this.name = newInfo.name;
-          this.weightAmount = newInfo.weightAmount;
-          this.measure = newInfo.measure;
-          this.price = newInfo.price;
-          this.description = newInfo.description;
-          this.discount = newInfo.discount;
+    name: String,
+    price: Number,
+    weightAmount: Number,
+    measure: {
+      type: String,
+      validator: function(value) {
+          return ["piece", "kg"].indexOf(value) !== -1;
       }
+    },
+    description: String,
+    discount: String
   },
+  emits: ['save-product'],
   methods: {
-    saveProduct() {
-      let thisApp = this;
-      let date = thisApp.date;
-      let time = thisApp.time;
-      let currency = thisApp.currency;
-      let country = thisApp.country;
-      let city = thisApp.city;
-      let index = thisApp.index;
-      let street = thisApp.street;
-      let houseNumber = thisApp.houseNumber;
-      let payMethod = thisApp.payMethod;
-      let shopName = thisApp.shopName;
-      let url = `http://localhost:3030/save-product?date=${date}&time=${time}`;
-      url += currency ? `&currency=${currency}` : "";
-      url += country ? `&country=${country}` : "";
-      url += city ? `&city=${city}` : "";
-      url += index ? `&index=${index}` : "";
-      url += street ? `&street=${street}` : "";
-      url += houseNumber ? `&houseNumber=${houseNumber}` : "";
-      url += payMethod ? `&payMethod=${payMethod}` : "";
-      url += shopName ? `&shopName=${shopName}` : "";
+    sendProductToSave() {
+      const product = {
+        name: this.localName,
+        price: this.localPrice,
+        weightAmount: this.localWeightAmount,
+        measure: this.localMeasure,
+        description: this.localDescription,
+        discount: this.localDiscount
+      };
 
-      // console.log('RAW url >: ', url);
-      // url = encodeURIComponent(url);
+      console.log('sendProductToSave product: ', product);
 
-      console.log("url >: ", url);
+      this.$emit('save-product', product);
+    }
 
-      fetch(url)
-        .then((response) => {
-          if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
+    // removeProduct() {
+    //   let thisApp = this;
+    //   let date = thisApp.date;
+    //   let time = thisApp.time;
+    //   let url = `http://localhost:3030/remove-product?date=${date}&time=${time}`;
 
-          response.json().then(function (data) {
-            console.log("RESP data: ", data);
-            thisApp.activeDateProducts = [...data];
-          });
-        })
-        .catch(function (err) {
-          console.log("Fetch Error :-S", err);
-        });
-    },
-    removeProduct() {
-      let thisApp = this;
-      let date = thisApp.date;
-      let time = thisApp.time;
-      let url = `http://localhost:3030/remove-product?date=${date}&time=${time}`;
+    //   console.log("url >: ", url);
 
-      console.log("url >: ", url);
+    //   fetch(url)
+    //     .then((response) => {
+    //       if (response.status !== 200) {
+    //         console.log(
+    //           "Looks like there was a problem. Status Code: " + response.status
+    //         );
+    //         return;
+    //       }
 
-      fetch(url)
-        .then((response) => {
-          if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
-
-          response.json().then(function (data) {
-            console.log("REMOVE data: ", data);
-            // console.log("REMOVE data: ", data);
-          });
-        })
-        .catch(function (err) {
-          console.log("Fetch Error :-S", err);
-        });
-    },
+    //       response.json().then(function (data) {
+    //         console.log("REMOVE data: ", data);
+    //         // console.log("REMOVE data: ", data);
+    //       });
+    //     })
+    //     .catch(function (err) {
+    //       console.log("Fetch Error :-S", err);
+    //     });
+    // }
   }
 }; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>

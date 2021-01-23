@@ -1,10 +1,10 @@
 <template>
     <div class="product product--default" v-if="isDefault">
-        <product-info :info="infoFromProduct" :isDefault="isDefault" />
+        <product-info v-bind="product" isDefault @save-product="retriggerSendProductToSave" /> 
         <!-- <span class="badge bg-primary rounded-pill product__badge">{{item.products ? item.products.length: 0 }}</span> -->
     </div>
     <li class="product" v-else>
-        <product-info :info="infoFromProduct" :isDefault="isDefault" />
+        <product-info v-bind="product" /> <!-- TODO: remove @save-product -->
     </li>
 </template>
 
@@ -14,24 +14,19 @@ import ProductInfo from './ProductInfo.vue';
 export default {
   name: 'product', 
   props: {
-    product: Object,
+    product: {
+        type: Object,
+        required: true
+    },
     isDefault: Boolean
   },
-  computed: {
-      infoFromProduct() {
-          const product = this.product;
-          const info = {
-            name: product.name, 
-            weightAmount: product.weightAmount, 
-            measure: product.measure,
-            price: product.price, 
-            description: product.description,
-            discount: product.discount
-        };
-
-        return info;
+  emits: ['save-product'],
+  methods: {
+      retriggerSendProductToSave(product) {
+          console.log('product: ', product);
+          this.$emit('save-product', product);
       }
-  }, 
+  },
   components: {
     ProductInfo
   }
