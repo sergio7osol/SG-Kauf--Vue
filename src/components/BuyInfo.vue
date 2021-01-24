@@ -268,8 +268,12 @@ export default {
                 }
 
                 response.json().then(function (data) {
-                    console.log('Arrived products for updating: ', data);
-                    thisApp.localProducts = data;
+                    if (!data.success) {
+                        thisApp.localProducts = data;
+                    } else {
+                        console.log('Error. Program stops. ', data.error);
+                        return false;
+                    }
                 });
             })
             .catch(function (err) {
