@@ -60,14 +60,11 @@ export default {
     calculatedSum() {
       console.log('this.activeDateBuys: ', this.activeDateBuys.length);
       const sum = this.activeDateBuys.reduce((buySum, buy) => {
-        console.log('buySum: ', buySum);
-        console.log('buy.products: ', buy.products);
+        const products = buy.products;
 
-        const newArray = buy.products.reduce((productSum, product) => productSum += product.price, 0);
-
-        console.log('newArray: ', newArray);
-
-        buySum += newArray;
+        if (products) {
+          buySum += products.reduce((productSum, product) => productSum += product.price, 0);
+        }
 
         return buySum;
       }, 0);
@@ -127,7 +124,6 @@ export default {
   },
   components: {
     LeftMenu,
-    // AddItem,
     BuyList,
     Sum
   },
