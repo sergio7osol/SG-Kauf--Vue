@@ -19,16 +19,14 @@
             <div class="pl-0">
               <left-menu :dates='dates' @load-date='getDate' /> 
             </div>
-            <div class="col">
+            <div class="col mt-3">
               <buy-list :dateBuys="activeDateBuys" />
             </div>
           </div>
         </div>
       </div>
-      <div class="col-2 aside">
-        <div class="weather-forecast">
-          <h2>Aside column</h2>
-        </div>
+      <div class="col-2 mt-3 aside">
+        <sum :date="activeDate" :amount="calculatedSum" />
       </div>
     </div>
   </div> 
@@ -39,6 +37,7 @@ import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LeftMenu from './components/LeftMenu.vue';
 import BuyList from './components/BuyList.vue';
+import Sum from './components/Sum';
 
 export default {
   name: 'App',
@@ -49,6 +48,34 @@ export default {
       activeDateBuys: [],
       start: null
     };
+  },
+  computed: {
+    activeDate() {
+      try {
+        return this.activeDateBuys[0].date;
+      } catch (error) {
+        return 'No date selected.';
+      }
+    },
+    calculatedSum() {
+      console.log('this.activeDateBuys: ', this.activeDateBuys.length);
+      const sum = this.activeDateBuys.reduce((buySum, buy) => {
+        console.log('buySum: ', buySum);
+        console.log('buy.products: ', buy.products);
+
+        const newArray = buy.products.reduce((productSum, product) => productSum += product.price, 0);
+
+        console.log('newArray: ', newArray);
+
+        buySum += newArray;
+
+        return buySum;
+      }, 0);
+
+      console.log('SUM: ', sum);
+
+      return sum;
+    }
   },
   methods: {
     getAllDates: function() {
@@ -102,7 +129,7 @@ export default {
     LeftMenu,
     // AddItem,
     BuyList,
-    // DataSender
+    Sum
   },
 };
 </script>
