@@ -3,7 +3,7 @@
         <select class="form-control custom-select product-info__name" v-model="localName">
           <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
         </select>
-        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" type="number" />
+        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" type="number" />
         <div class="product-info__weight-and-measure">
           <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" type="number" />
           <select class="form-control custom-select product-info__measure" v-model="localMeasure">
