@@ -31,7 +31,7 @@ export default {
         localPrice: this.price,
         localDiscount: this.discount,
         ValueCollection: {
-          names: ['Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti'],
+          names: ['Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti', 'Salatgurke'],
           measures: ["piece", "kg"]      
         }
       };
@@ -50,7 +50,7 @@ export default {
       }
     },
     description: String,
-    discount: String
+    discount: [String, Number]
   },
   emits: ['save-product'],
   methods: {
