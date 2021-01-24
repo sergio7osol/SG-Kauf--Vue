@@ -62,7 +62,7 @@ export default {
         const products = buy.products;
 
         if (products) {
-          buySum += products.reduce((productSum, product) => productSum += product.price, 0);
+          buySum += products.reduce((productSum, product) => productSum += product.price * product.weightAmount, 0);
         }
 
         return buySum;
