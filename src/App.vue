@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="col-2 mt-3 aside">
-        <sum :date="activeDate" :amount="calculatedSum" />
+        <sum :date="activeDate" :amount="activeSum" :currency="activeCurrency" />
       </div>
     </div>
   </div> 
@@ -57,8 +57,7 @@ export default {
         return 'No date selected.';
       }
     },
-    calculatedSum() {
-      console.log('this.activeDateBuys: ', this.activeDateBuys.length);
+    activeSum() {
       const sum = this.activeDateBuys.reduce((buySum, buy) => {
         const products = buy.products;
 
@@ -69,9 +68,15 @@ export default {
         return buySum;
       }, 0);
 
-      console.log('SUM: ', sum);
-
       return sum;
+    },
+    activeCurrency() { // TODO: make converting to one currency for all buys (in case they are different)
+      try {
+        console.log('this.activeDateBuys[0]: ', this.activeDateBuys[0]);
+        return this.activeDateBuys[0].currency;
+      } catch (error) {
+        return '';
+      }
     }
   },
   methods: {
