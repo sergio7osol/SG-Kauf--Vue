@@ -248,17 +248,17 @@ export default {
         const thisApp = this;
         const date = this.localDate;
         const time = this.localTime;
-        const { name, price, weightAmount, measure, description, discount } = product;
+        let { name, price, weightAmount, measure, description, discount } = product;
         let url = `http://localhost:3030/save-product?date=${date}&time=${time}`;
+
+        name = encodeURIComponent(name);
+
         url += name ? `&name=${name}` : '';
         url += price ? `&price=${price}` : '';
         url += weightAmount ? `&weightAmount=${weightAmount}` : '';
         url += measure ? `&measure=${measure}` : '';
         url += description ? `&description=${description}` : '';
         url += discount ? `&discount=${discount}` : '';
-
-        console.log('RAW url >: ', url);
-      // url = encodeURIComponent(url);
 
         fetch(url)
             .then((response) => {
@@ -284,11 +284,12 @@ export default {
         let thisApp = this;
         const date = this.localDate;
         const time = this.localTime;
-        const { name, price, weightAmount, measure, description, discount } = product;
+        let { name, price, weightAmount, measure, description, discount } = product;
+
+        name = encodeURIComponent(name);
+
         let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${name}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
         url += description ? `&description=${description}` : '';
-
-        console.log('url >: ', url);
 
         fetch(url)
             .then((response) => {
@@ -306,9 +307,7 @@ export default {
                         console.log('Error. Program stops. ', data.error);
                         return false;
                     } else {
-                        console.log('thisApp.localProducts: ', JSON.stringify(thisApp.localProducts, null, 2));
                         thisApp.localProducts = data;
-                        console.log('thisApp.localProducts 2: ', thisApp.localProducts);
                     }
                 });
             })
