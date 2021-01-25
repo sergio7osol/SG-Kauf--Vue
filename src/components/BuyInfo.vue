@@ -52,7 +52,7 @@
 import ProductList from './ProductList.vue';
 
 export default {
-  name: "buy-info",
+  name: 'buy-info',
   data() {
     const dataState = {
         localDate: this.date,
@@ -67,14 +67,14 @@ export default {
         localShopName: this.shopName,
         localProducts: this.products,
         ValueCollection: {
-            countries: ["Germany", "Russia"],
-            shopNames: ["REWE"], 
-            indexes: ["22307"],
-            cities: ["Hamburg", "Moscow", "Saransk"],
-            streets: ["Fuhlsbuettler Str."],
-            houseNumbers: ["387"],
-            currencies: ["EUR", "RUB"],
-            payMethods: ["EC card", "Cash"]
+            countries: ['Germany', 'Russia'],
+            shopNames: ['REWE'], 
+            indexes: ['22307', '22529'],
+            cities: ['Hamburg', 'Moscow', 'Saransk'],
+            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse'],
+            houseNumbers: ['387', '8'],
+            currencies: ['EUR', 'RUB'],
+            payMethods: ['EC card', 'Cash']
         }
     };
 
@@ -94,55 +94,55 @@ export default {
     currency: {
         type: String,
         validator: function(value) {
-            return ["EUR", "RUB"].indexOf(value) !== -1;
+            return ['EUR', 'RUB'].indexOf(value) !== -1;
         }
     },
     country: {
         type: String,
         validator: function(value) {
-            return ["Germany", "Russia"].indexOf(value) !== -1;
+            return ['Germany', 'Russia'].indexOf(value) !== -1;
         }
     },
     city: {
         type: String,
         validator: function(value) {
-            return ["Hamburg", "Moscow", "Saransk"].indexOf(value) !== -1;
+            return ['Hamburg', 'Moscow', 'Saransk'].indexOf(value) !== -1;
         }
     },
     index: {
         type: String,
         validator: function(value) {
-            return ["22307"].indexOf(value) !== -1;
+            return ['22307'].indexOf(value) !== -1;
         }
     },
     street: {
         type: String,
         validator: function(value) {
-            return ["Fuhlsbuettler Str."].indexOf(value) !== -1;
+            return ['Fuhlsbuettler Str.'].indexOf(value) !== -1;
         }
     },
     houseNumber: {
         type: String,
         validator: function(value) {
-            return ["387"].indexOf(value) !== -1;
+            return ['387'].indexOf(value) !== -1;
         }
     },
     payMethod: {
         type: String,
         validator: function(value) {
-            return ["EC card", "Cash"].indexOf(value) !== -1;
+            return ['EC card', 'Cash'].indexOf(value) !== -1;
         }
     },
     shopName: {
         type: String,
         validator: function(value) {
-            return ["REWE"].indexOf(value) !== -1;
+            return ['REWE'].indexOf(value) !== -1;
         }
     },
     products: {
         type: Array,
         // validator: function(value) {
-        //     return ["REWE"].indexOf(value) !== -1;
+        //     return ['REWE'].indexOf(value) !== -1;
         // }
     },
     isDefault: Boolean
@@ -153,13 +153,13 @@ export default {
     convertDate: {
       get() {
         const currentDate = this.localDate;
-        const normalizedDate = currentDate.split(".").reverse().join("-");
+        const normalizedDate = currentDate.split('.').reverse().join('-');
 
         return normalizedDate;
       },
       set(v) {
         const newDate = v;
-        const normalizedDate = newDate.split("-").reverse().join(".");
+        const normalizedDate = newDate.split('-').reverse().join('.');
 
         this.localDate = normalizedDate;
       }
@@ -181,14 +181,14 @@ export default {
     //   let products = this.localProducts;
 
       let url = `http://localhost:3030/save-buy?date=${date}&time=${time}`;
-      url += currency ? `&currency=${currency}` : "";
-      url += country ? `&country=${country}` : "";
-      url += city ? `&city=${city}` : "";
-      url += index ? `&index=${index}` : "";
-      url += street ? `&street=${street}` : "";
-      url += houseNumber ? `&houseNumber=${houseNumber}` : "";
-      url += payMethod ? `&payMethod=${payMethod}` : "";
-      url += shopName ? `&shopName=${shopName}` : "";
+      url += currency ? `&currency=${currency}` : '';
+      url += country ? `&country=${country}` : '';
+      url += city ? `&city=${city}` : '';
+      url += index ? `&index=${index}` : '';
+      url += street ? `&street=${street}` : '';
+      url += houseNumber ? `&houseNumber=${houseNumber}` : '';
+      url += payMethod ? `&payMethod=${payMethod}` : '';
+      url += shopName ? `&shopName=${shopName}` : '';
 
       console.log('RAW url >: ', url);
     //   url = encodeURIComponent(url);
@@ -198,18 +198,18 @@ export default {
         .then((response) => {
           if (response.status !== 200) {
             console.log(
-              "Looks like there was a problem. Status Code: " + response.status
+              'Looks like there was a problem. Status Code: ' + response.status
             );
             return;
           }
 
           response.json().then(function (data) {
-            console.log("RESP data: ", data);
+            console.log('RESP data: ', data);
             thisApp.activeDateBuys = [...data];
           });
         })
         .catch(function (err) {
-          console.log("Fetch Error :-S", err);
+          console.log('Fetch Error :-S', err);
         });
     },
     removeBuy() {
@@ -218,7 +218,7 @@ export default {
       let time = this.localTime;
       let url = `http://localhost:3030/remove-buy?date=${date}&time=${time}`;
 
-      console.log("url >: ", url);
+      console.log('url >: ', url);
 
         if (confirm('You sure, you want to delete this buy?')) {
 
@@ -231,7 +231,7 @@ export default {
       fetch(url)
         .then((response) => {
           if (response.status !== 200) {
-            console.log("Looks like there was a problem. Status Code: " + response.status);
+            console.log('Looks like there was a problem. Status Code: ' + response.status);
             return;
           }
 
@@ -241,7 +241,7 @@ export default {
           });
         })
         .catch(function (err) {
-          console.log("Fetch Error :-S", err);
+          console.log('Fetch Error :-S', err);
         });
     },
     saveProduct(product) {
@@ -263,7 +263,7 @@ export default {
         fetch(url)
             .then((response) => {
                 if (response.status !== 200) {
-                    console.log("Looks like there was a problem. Status Code: " + response.status);
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
 
@@ -277,7 +277,7 @@ export default {
                 });
             })
             .catch(function (err) {
-                console.log("Fetch Error :-S", err);
+                console.log('Fetch Error :-S', err);
             });
     },
     removeProduct(product) {
@@ -288,19 +288,19 @@ export default {
         let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${name}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
         url += description ? `&description=${description}` : '';
 
-        console.log("url >: ", url);
+        console.log('url >: ', url);
 
         fetch(url)
             .then((response) => {
                 if (response.status !== 200) {
                     console.log(
-                    "Looks like there was a problem. Status Code: " + response.status
+                    'Looks like there was a problem. Status Code: ' + response.status
                     );
                     return;
                 }
 
                 response.json().then(function (data) {
-                    console.log("REMOVE data: ", data);
+                    console.log('REMOVE data: ', data);
                     
                     if (data.success === false) {
                         console.log('Error. Program stops. ', data.error);
@@ -313,7 +313,7 @@ export default {
                 });
             })
             .catch(function (err) {
-                console.log("Fetch Error :-S", err);
+                console.log('Fetch Error :-S', err);
             });
     }
   },
@@ -330,7 +330,7 @@ export default {
   justify-content: flex-end;
 
   &::before {
-    content: counter(buy-counter) ".";
+    content: counter(buy-counter) '.';
     margin-right: 1rem;
     font-size: 1.3rem;
     color: #ccc;
