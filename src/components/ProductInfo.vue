@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "product-info",
+  name: 'product-info',
   data() {
     const dataState = {
         localName: this.name,
@@ -31,8 +31,8 @@ export default {
         localPrice: this.price,
         localDiscount: this.discount,
         ValueCollection: {
-          names: ['Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti', 'Salatgurke'],
-          measures: ["piece", "kg"]      
+          names: ['Deli.Schw.Braten', 'Tilsiter 45% Sch', 'JA! Maasdamer', 'Steinofenbrot', 'Sonnenkern', 'Zitrone', 'Banane BIO', 'Heidelbeere', 'Obst/Gemuese', 'Salatgurke', 'Feine Butter', 'Wiedemilch 3.9%', 'Kefir Natur 1.5%', 'Speisequark Mag.', 'Ofenfr. BBQ-Pork', 'Schlaf+Nerventee', 'Miracel Whip', 'Gelee-Bananen', 'Interdentalb.Bl.'],
+          measures: ['piece', 'kg']      
         }
       };
 
@@ -46,7 +46,7 @@ export default {
     measure: {
       type: String,
       validator: function(value) {
-          return ["piece", "kg"].indexOf(value) !== -1;
+          return ['piece', 'kg'].indexOf(value) !== -1;
       }
     },
     description: String,
