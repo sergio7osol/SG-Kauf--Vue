@@ -54,7 +54,7 @@ export default {
       try {
         return this.activeDateBuys[0].date;
       } catch (error) {
-        return 'No date selected.';
+        return 'No date selected';
       }
     },
     activeSum() {
