@@ -4,7 +4,7 @@
         <!-- <span class="badge bg-primary rounded-pill product__badge">{{item.products ? item.products.length: 0 }}</span> -->
     </div>
     <li class="product" v-else>
-        <product-info v-bind="product" /> <!-- TODO: remove @save-product -->
+        <product-info v-bind="product" @remove-product="retriggerSendProductToRemove" /> <!-- TODO: remove @save-product -->
     </li>
 </template>
 
@@ -20,17 +20,20 @@ export default {
     },
     isDefault: Boolean
   },
-  emits: ['save-product'],
+  emits: ['save-product', 'remove-product'],
   methods: {
       retriggerSendProductToSave(product) {
-          console.log('product: ', product);
           this.$emit('save-product', product);
+      },
+      retriggerSendProductToRemove(product) {
+          console.log('product: ', product);
+          this.$emit('remove-product', product);
       }
   },
   components: {
     ProductInfo
   }
-} // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
+}
 </script>
 
 <style scoped lang="scss">

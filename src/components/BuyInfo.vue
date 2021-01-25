@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="localProducts" @save-product="saveProduct"/>
+        <product-list :buyProducts="localProducts" @save-product="saveProduct" @remove-product="removeProduct" />
     </div>
   </form>
 </template>
@@ -268,11 +268,47 @@ export default {
                 }
 
                 response.json().then(function (data) {
-                    if (!data.success) {
-                        thisApp.localProducts = data;
-                    } else {
+                    if (response.status !== 200) {
                         console.log('Error. Program stops. ', data.error);
                         return false;
+                    } else {
+                        thisApp.localProducts = data;
+                    }
+                });
+            })
+            .catch(function (err) {
+                console.log("Fetch Error :-S", err);
+            });
+    },
+    removeProduct(product) {
+        let thisApp = this;
+        const date = this.localDate;
+        const time = this.localTime;
+        const { name, price, weightAmount, measure, description, discount } = product;
+        let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${name}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
+        url += description ? `&description=${description}` : '';
+
+        console.log("url >: ", url);
+
+        fetch(url)
+            .then((response) => {
+                if (response.status !== 200) {
+                    console.log(
+                    "Looks like there was a problem. Status Code: " + response.status
+                    );
+                    return;
+                }
+
+                response.json().then(function (data) {
+                    console.log("REMOVE data: ", data);
+                    
+                    if (data.success === false) {
+                        console.log('Error. Program stops. ', data.error);
+                        return false;
+                    } else {
+                        console.log('thisApp.localProducts: ', JSON.stringify(thisApp.localProducts, null, 2));
+                        thisApp.localProducts = data;
+                        console.log('thisApp.localProducts 2: ', thisApp.localProducts);
                     }
                 });
             })

@@ -13,7 +13,7 @@
         <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" type="text" />
         <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" type="number" />
         <div class="product-info__buttons">
-          <button class="btn btn--icon-remove" v-show="!isDefault" @click="removeProduct"></button>
+          <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove"></button>
           <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave">Save product</button>
         </div>
     </form>
@@ -52,7 +52,7 @@ export default {
     description: String,
     discount: [String, Number]
   },
-  emits: ['save-product'],
+  emits: ['save-product', 'remove-product'],
   methods: {
     sendProductToSave() {
       const product = {
@@ -67,34 +67,21 @@ export default {
       console.log('sendProductToSave product: ', product);
 
       this.$emit('save-product', product);
+    },
+    sendProductToRemove() {
+      const product = {
+        name: this.localName,
+        price: this.localPrice,
+        weightAmount: this.localWeightAmount,
+        measure: this.localMeasure,
+        description: this.localDescription,
+        discount: this.localDiscount
+      };
+
+      console.log('sendProductToRemove product: ', product);
+
+      this.$emit('remove-product', product);
     }
-
-    // removeProduct() {
-    //   let thisApp = this;
-    //   let date = thisApp.date;
-    //   let time = thisApp.time;
-    //   let url = `http://localhost:3030/remove-product?date=${date}&time=${time}`;
-
-    //   console.log("url >: ", url);
-
-    //   fetch(url)
-    //     .then((response) => {
-    //       if (response.status !== 200) {
-    //         console.log(
-    //           "Looks like there was a problem. Status Code: " + response.status
-    //         );
-    //         return;
-    //       }
-
-    //       response.json().then(function (data) {
-    //         console.log("REMOVE data: ", data);
-    //         // console.log("REMOVE data: ", data);
-    //       });
-    //     })
-    //     .catch(function (err) {
-    //       console.log("Fetch Error :-S", err);
-    //     });
-    // }
   }
 }; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
 </script>
