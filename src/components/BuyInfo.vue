@@ -68,11 +68,11 @@ export default {
         localProducts: this.products,
         ValueCollection: {
             countries: ['Germany', 'Russia'],
-            shopNames: ['REWE'], 
-            indexes: ['22307', '22529'],
+            shopNames: ['REWE', 'ROHLFS BÄCKEREI KONDITOREI GmbH'], 
+            indexes: ['22307', '22529', '22299'],
             cities: ['Hamburg', 'Moscow', 'Saransk'],
-            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse'],
-            houseNumbers: ['387', '8'],
+            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Winterhuder Marktplatz'],
+            houseNumbers: ['387', '8', '13-15'],
             currencies: ['EUR', 'RUB'],
             payMethods: ['EC card', 'Cash']
         }

@@ -31,7 +31,7 @@ export default {
         localPrice: this.price,
         localDiscount: this.discount,
         ValueCollection: {
-          names: ['Deli.Schw.Braten', 'Tilsiter 45% Sch', 'JA! Maasdamer', 'Steinofenbrot', 'Sonnenkern', 'Zitrone', 'Banane BIO', 'Heidelbeere', 'Obst/Gemuese', 'Salatgurke', 'Feine Butter', 'Wiedemilch 3.9%', 'Kefir Natur 1.5%', 'Speisequark Mag.', 'Ofenfr. BBQ-Pork', 'Schlaf+Nerventee', 'Miracel Whip', 'Gelee-Bananen', 'Interdentalb.Bl.'],
+          names: ['Deli.Schw.Braten', 'Tilsiter 45% Sch', 'JA! Maasdamer', 'Steinofenbrot', 'Sonnenkern', 'Zitrone', 'Banane BIO', 'Heidelbeere', 'Obst/Gemuese', 'Salatgurke', 'Feine Butter', 'Wiedemilch 3.9%', 'Kefir Natur 1.5%', 'Speisequark Mag.', 'Ofenfr. BBQ-Pork', 'Schlaf+Nerventee', 'Miracel Whip', 'Gelee-Bananen', 'Interdentalb.Bl.', 'Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti', 'Haeh. Unterkeulen', 'Weihn. Chocolade', 'Santa Glamour', 'Gelee Baum', 'Pfeffersalami', 'Wacholderschinke', 'Muen. Weisswurst', 'JA! Emmentaler', 'JA! Mozzarella', 'Vital und fit', 'Muerbetorteletts', 'Rauecherlachs', 'Makrele geraeuch.', 'Ofenbaguette F.', 'Orange', 'Clementine', 'Mango', 'Kaki', 'Kartoffeln', 'Karotte', 'Rote Bete frisch', 'Eier Freil. Weiss', 'Kernige Flocken', 'Appel Heringsfil.', 'Hering Tomate', 'Hering Paprika', 'Ananasstücke', 'Classic Paprika', 'Sour Cream', 'Coca-Cola', 'Pfand', 'Rotk. Alkoholfrei', 'Lenor Weichspue', 'Somat Klarsp.', 'JA Spezialsalz', 'Leergut Einweg', 'Leerg. MW V. ST'],
           measures: ['piece', 'kg']      
         }
       };
