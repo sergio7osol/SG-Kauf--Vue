@@ -26,6 +26,7 @@
         </div>
       </div>
       <div class="col-2 mt-3 aside">
+        <whole-sum :amount="wholeSum" :currency="activeCurrency" @get-whole-sum="getWholeSum" /> <!-- TODO: currency exchange      |:dateRange=""|         --> 
         <sum :date="activeDate" :amount="activeSum" :currency="activeCurrency" />
       </div>
     </div>
@@ -37,6 +38,7 @@ import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LeftMenu from './components/LeftMenu.vue';
 import BuyList from './components/BuyList.vue';
+import WholeSum from './components/WholeSum';
 import Sum from './components/Sum';
 
 export default {
@@ -44,6 +46,7 @@ export default {
   data() {
     return {
       title: 'SG-Kauf--Vue',
+      wholeSum: 0,
       dates: [],
       activeDateBuys: [],
       start: null
@@ -122,6 +125,33 @@ export default {
         .catch(function(err) {
           console.log('Fetch Error :-S', err);
         });
+    },
+    getWholeSum() {
+      const thisApp = this;
+
+      fetch('http://localhost:3030/get-whole-sum')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' + response.status);
+              return;
+            }
+
+            response.json().then(function(data) {
+              const wholeSum = data.wholeSum;
+              console.log('data wholE: ', wholeSum, typeof wholeSum);
+
+              console.log('success!!!!!');
+
+              if (wholeSum && typeof wholeSum === 'number') {
+                thisApp.wholeSum = wholeSum;
+              }
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
     }
   },
   created: function () {
@@ -130,7 +160,8 @@ export default {
   components: {
     LeftMenu,
     BuyList,
-    Sum
+    Sum,
+    WholeSum
   },
 };
 </script>
