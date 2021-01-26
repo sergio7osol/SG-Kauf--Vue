@@ -291,6 +291,13 @@ export default {
         let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${name}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
         url += description ? `&description=${description}` : '';
 
+        if (confirm('You sure, you want to delete this product?')) {
+            console.log(`Prompted deleting of the product. Confirmed. The product ${name} on ${date} at ${time} is going to be deleted...`);
+        } else {
+            console.log(`Prompted deleting of the product. Rejected. The product ${name} on ${date} at ${time} is NOT going to be deleted.`);
+            return false;
+        }
+
         fetch(url)
             .then((response) => {
                 if (response.status !== 200) {
