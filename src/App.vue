@@ -62,14 +62,58 @@ export default {
     },
     activeSum() {
       const sum = this.activeDateBuys.reduce((buySum, buy) => {
-        const products = buy.products;
+        const products = buy.products; 
+        let resultProductSum = null;
 
         if (products) {
-          buySum += products.reduce((productSum, product) => productSum += product.price * product.weightAmount, 0);
+          resultProductSum = products.reduce((productSum, product) => {
+            const { price, weightAmount, discount } = product;
+            let lastLetter = null;
+            let discountNumber = null;
+            let discountFactor = null;
+
+            // calculating cost
+            productSum.cost += price * weightAmount
+
+            if (typeof discount === 'string') {
+              console.log('discount str: ', discount, typeof discount);
+              lastLetter = discount.slice(-1);
+
+              if (lastLetter !== '%') {
+                throw Error('The last symbol in the discount string value should be %. Program exits.');
+              }
+
+              discountNumber = Number(discount.slice(0, -1))
+              discountFactor = (price/100) * discountNumber;
+
+              console.log('discountFactor %: ', discountFactor);
+            } else if (typeof discount === 'number') {
+              console.log('price: ', price);
+              discountFactor = (price * discount/100); 
+              
+              console.log('discountFactor number: ', discountFactor);
+            } else {
+              throw Error('"discount" product prop should be eigher persentage of type "string" ("%" at the end) or "number". Program exits.');
+            }
+
+            // calculating discount
+            productSum.discount += discountFactor * weightAmount;
+
+            console.log('productSum: ', productSum);
+
+            return productSum;
+          }, {cost: 0, discount: 0});
+
+          buySum.cost += resultProductSum.cost;
+          buySum.discount += resultProductSum.discount;
+
+          console.log('buySum: ', JSON.stringify(buySum, null, 4));
         }
 
         return buySum;
-      }, 0);
+      }, {cost: 0, discount: 0});
+
+      console.log('sum: ', sum);
 
       return sum;
     },

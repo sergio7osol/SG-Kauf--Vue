@@ -11,7 +11,7 @@
           </select>
         </div>
         <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" type="text" />
-        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" type="number" />
+        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" type="text" /> <!-- pattern="d+\%?" -->
         <div class="product-info__buttons">
           <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove"></button>
           <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave">Save product</button>
