@@ -68,11 +68,11 @@ export default {
         localProducts: this.products,
         ValueCollection: {
             countries: ['Germany', 'Russia'],
-            shopNames: ['REWE', 'ROHLFS BÄCKEREI KONDITOREI GmbH'], 
-            indexes: ['22307', '22529', '22299'],
+            shopNames: ['REWE', 'ALDI', 'Kaufland', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel'], 
+            indexes: ['22307', '22529', '22299', '20251', '22761'],
             cities: ['Hamburg', 'Moscow', 'Saransk'],
-            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Winterhuder Marktplatz'],
-            houseNumbers: ['387', '8', '13-15'],
+            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse'],
+            houseNumbers: ['387', '8', '13-15', '2', '39', '300'],
             currencies: ['EUR', 'RUB'],
             payMethods: ['EC card', 'Cash']
         }
