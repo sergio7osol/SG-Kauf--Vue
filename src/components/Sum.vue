@@ -56,7 +56,7 @@ export default {
         &__payment {
             display: flex;
             justify-content: space-between;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             padding: .1rem .4rem;
             margin-top: .7rem;
 

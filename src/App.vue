@@ -183,11 +183,8 @@ export default {
 
             response.json().then(function(data) {
               const wholeSum = data.wholeSum;
-              console.log('data wholE: ', wholeSum, typeof wholeSum);
 
-              console.log('success!!!!!');
-
-              if (wholeSum && typeof wholeSum === 'number') {
+              if (wholeSum && typeof wholeSum === 'object' && typeof wholeSum.cost === 'number' && typeof wholeSum.discount === 'number') {
                 thisApp.wholeSum = wholeSum;
               }
             });
