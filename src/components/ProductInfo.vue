@@ -1,20 +1,20 @@
 <template>
     <form class="col product-info">
-        <select class="form-control custom-select product-info__name" v-model="localName">
+        <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
           <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
         </select>
-        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" type="number" />
+        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
         <div class="product-info__weight-and-measure">
-          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" type="number" />
-          <select class="form-control custom-select product-info__measure" v-model="localMeasure">
+          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
+          <select class="form-control custom-select product-info__measure" v-model="localMeasure" :disabled="!isDefault">
               <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
           </select>
         </div>
-        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" type="text" />
-        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" type="text" /> <!-- pattern="d+\%?" -->
+        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
+        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" :readonly="!isDefault" type="text" /> <!-- pattern="d+\%?" -->
         <div class="product-info__buttons">
-          <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove"></button>
-          <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave">Save product</button>
+          <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove" :readonly="!isDefault"></button>
+          <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
         </div>
     </form>
 </template>
