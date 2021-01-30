@@ -73,6 +73,15 @@ export default {
       text-transform: uppercase;
       border-bottom: 1px solid #777;
       transition: background-color 0.3s, color 0.3s;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        border-color: transparent;
+        border-width: 30px 0 30px 17px;
+        border-style: solid;
+        transition: right 0.3s 0.3s, border-color 0.3s;
+      }
 
       &:hover {
         background: #232323;
@@ -84,12 +93,8 @@ export default {
         color: #fff !important;
 
         &::after {
-          content: "";
-          position: absolute;
-          right: -17px;
           border-color: #0000 #0000 #0000 #0070BA;
-          border-width: 30px 0 30px 17px;
-          border-style: solid;
+          right: -17px;
         }
       }
     }
