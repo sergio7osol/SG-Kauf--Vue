@@ -410,7 +410,6 @@ export default {
         align-items: center;
     }
     &__btn-add {
-        width: 5.87rem;
         margin-left: .4rem;
     }
 }
