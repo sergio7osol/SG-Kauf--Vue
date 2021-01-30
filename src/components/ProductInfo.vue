@@ -61,7 +61,7 @@
       <td v-else>
         <div class="product-info__buttons">
           <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove" :readonly="!isDefault"></button>
-          <button class="btn btn-success btn-sm product-info__btn-add text-nowrap" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
+          <button class="d-none btn btn-success btn-sm product-info__btn-add text-nowrap" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
         </div>
       </td>
   </tr>
@@ -165,9 +165,9 @@ export default {
   }
 
   &__buttons {
-    width: 10rem;
+    // width: 10rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
   }
   &__btn-add {
