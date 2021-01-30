@@ -2,10 +2,11 @@
   <nav id="sidebarMenu" class="d-md-block bg-dark sidebar collapse vertical-menu">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column vertical-menu__list">
-          <li class="nav-item vertical-menu__item" v-for="date in dates" :key="date">
-            <a class="nav-link vertical-menu__item-link" :class="{'vertical-menu__item-link--active': date === activeItem}" @click="chooseDate(date)" aria-current="page" href="#">
+          <li class="nav-item vertical-menu__item" v-for="item in dates" :key="item.date">
+            <a class="nav-link vertical-menu__item-link" :class="{'vertical-menu__item-link--active': item.date === activeItem}" @click="chooseDate(item.date)" aria-current="page" href="#">
+              <span class="vertical-menu__count-icon">{{item.count}}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-shopping-cart vertical-menu__item-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-              <span class="vertical-menu__item-text">{{date}}</span>
+              <span class="vertical-menu__item-text">{{item.date}}</span>
             </a>
           </li>
         </ul>
@@ -15,7 +16,7 @@
 
 <script>
 export default {
-  name: 'Left Menu',
+  name: 'left-menu',
   data: function() { 
     return {
       activeItem: null
@@ -51,12 +52,14 @@ export default {
     background-color: #2E2E2E;
     padding: 0;
     min-height: calc(100vh - 2.5rem);
+
     &__item {
       &--active {
         background-color: #dde;  
         border: 1px solid #bb88;
       }
     }
+
     &__item-link {
       display: flex;
       align-items: center;
@@ -98,9 +101,29 @@ export default {
         }
       }
     }
+
     &__item-icon {
       position: absolute;
       left: 1rem;
+    }
+
+    &__count-icon {
+      position: absolute;
+      top: 0;
+      bottom: 1.6rem;
+      left: 1.8rem;
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 1.3rem;
+      min-width: 1.3rem;
+      border-radius: 1rem;
+      background-color: #c92f2f;
+      color: #fff;
+      font-size: .7rem;
+      line-height: 1.3rem;
+      text-align: center;
+      vertical-align: middle;
+      z-index: 1;
     }
   }
 </style>
