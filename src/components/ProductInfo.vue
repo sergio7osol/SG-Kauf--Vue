@@ -154,10 +154,10 @@ export default {
   }
   &__weight-amount {
     width: 6rem;
+    margin-right: 0.5rem;
   }
 
   &__description {
-    width: 15rem;
   }
 
   &__discount {
