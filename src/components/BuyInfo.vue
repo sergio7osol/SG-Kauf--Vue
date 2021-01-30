@@ -69,10 +69,10 @@ export default {
         ValueCollection: {
             countries: ['Germany', 'Russia'],
             shopNames: ['REWE', 'ALDI', 'Kaufland', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel'], 
-            indexes: ['22307', '22529', '22299', '20251', '22761'],
+            indexes: ['22307', '22529', '22299', '20251', '22761', '22301'],
             cities: ['Hamburg', 'Moscow', 'Saransk'],
-            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse'],
-            houseNumbers: ['387', '8', '13-15', '2', '39', '300'],
+            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse'],
+            houseNumbers: ['387', '8', '13-15', '2', '39', '300', '70', '116-122'],
             currencies: ['EUR', 'RUB'],
             payMethods: ['EC card', 'Cash']
         }
