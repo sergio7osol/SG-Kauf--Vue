@@ -1,6 +1,6 @@
 <template>
     <product-info v-bind="product" isDefault @save-product="retriggerSendProductToSave" v-if="isDefault" /> 
-    <product-info v-bind="product" :index="index" @remove-product="retriggerSendProductToRemove" v-else /> <!-- TODO: remove @save-product -->
+    <product-info v-bind="product" :index="index + 1" @remove-product="retriggerSendProductToRemove" v-else /> <!-- TODO: remove @save-product -->
 </template>
 
 <script>
