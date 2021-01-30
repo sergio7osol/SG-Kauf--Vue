@@ -1,6 +1,6 @@
 <template>
   <div class="col-11 offset-1 product-list pt-3 pl-3">
-      <table class="table table-striped product-list__items">
+      <table class="table table-striped product-list__items mt-3">
         <thead class="product product--default">
           <product :product="emptyProduct" :isDefault="true" @save-product="retriggerSendProductToSave" :key="emptyProduct.measure + Date.now()" /> <!-- :key added, so that the product component always rerenders -->
         </thead>
