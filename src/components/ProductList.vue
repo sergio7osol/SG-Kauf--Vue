@@ -1,15 +1,20 @@
 <template>
   <div class="col product-list pt-3 pl-3">
-    <product :product="emptyProduct" :isDefault="true" @save-product="retriggerSendProductToSave" :key="emptyProduct.measure + Date.now()" /> <!-- :key added, so that the product component always rerenders -->
-    <ul class="list-group list-group-flush product-list__items">
-      <product 
-        v-for="(product, i) in buyProducts" 
-        :isDefault="false" 
-        :product="product" 
-        :key="product.name + Date.now() + i" 
-        @remove-product="retriggerSendProductToRemove"
-      /> 
-    </ul>
+      <table class="table table-striped product-list__items">
+        <thead class="product product--default">
+          <product :product="emptyProduct" :isDefault="true" @save-product="retriggerSendProductToSave" :key="emptyProduct.measure + Date.now()" /> <!-- :key added, so that the product component always rerenders -->
+        </thead>
+        <tbody class="product">
+          <product 
+            v-for="(product, i) in buyProducts" 
+            :isDefault="false" 
+            :product="product"
+            :index="i"
+            :key="product.name + Date.now() + i" 
+            @remove-product="retriggerSendProductToRemove"
+          /> 
+        </tbody>
+      </table>
   </div>
 </template>
 
@@ -51,10 +56,5 @@ export default {
 
 <style scoped lang="scss">
   .product-list {
-    &__items {
-      counter-reset: product-counter;
-      align-items: stretch;
-      list-style-type: none;
-    }
   } 
 </style>

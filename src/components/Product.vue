@@ -1,11 +1,6 @@
 <template>
-    <div class="product product--default" v-if="isDefault">
-        <product-info v-bind="product" isDefault @save-product="retriggerSendProductToSave" /> 
-        <!-- <span class="badge bg-primary rounded-pill product__badge">{{item.products ? item.products.length: 0 }}</span> -->
-    </div>
-    <li class="product" v-else>
-        <product-info v-bind="product" @remove-product="retriggerSendProductToRemove" /> <!-- TODO: remove @save-product -->
-    </li>
+    <product-info v-bind="product" isDefault @save-product="retriggerSendProductToSave" v-if="isDefault" /> 
+    <product-info v-bind="product" :index="index" @remove-product="retriggerSendProductToRemove" v-else /> <!-- TODO: remove @save-product -->
 </template>
 
 <script>
@@ -18,6 +13,7 @@ export default {
         type: Object,
         required: true
     },
+    index: Number,
     isDefault: Boolean
   },
   emits: ['save-product', 'remove-product'],
@@ -38,7 +34,6 @@ export default {
 
 <style scoped lang="scss">
     .product {
-        counter-increment: product-counter;
         padding-left: 2rem;
 
         &--default {

@@ -1,22 +1,70 @@
 <template>
-    <form class="col product-info">
+  <tr class="col product-info">
+      <th scope="col" v-if="isDefault">#</th>
+      <th scope="row" class="product-list__number-col" v-else>{{index}}</th>
+
+      <th scope="col" v-if="isDefault">
         <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
           <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
         </select>
+      </th>
+      <td v-else>
+        <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
+          <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
+        </select>
+      </td>
+
+      <th scope="col" v-if="isDefault">
         <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
+      </th>
+      <td v-else>
+        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
+      </td>
+
+      <th scope="col" v-if="isDefault">
         <div class="product-info__weight-and-measure">
           <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
           <select class="form-control custom-select product-info__measure" v-model="localMeasure" :disabled="!isDefault">
               <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
           </select>
         </div>
+      </th>
+      <td v-else>
+        <div class="product-info__weight-and-measure">
+          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
+          <select class="form-control custom-select product-info__measure" v-model="localMeasure" :disabled="!isDefault">
+              <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
+          </select>
+        </div>
+      </td>
+      
+      <th scope="col" v-if="isDefault">
         <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
+      </th>
+      <td v-else>
+        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
+      </td>
+
+      <th scope="col" v-if="isDefault">
         <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" :readonly="!isDefault" type="text" /> <!-- pattern="d+\%?" -->
+      </th>
+      <td v-else>
+        <input class="form-control product-info__discount" v-model="localDiscount" placeholder="Discount" :readonly="!isDefault" type="text" /> <!-- pattern="d+\%?" -->
+      </td>
+
+      <th scope="col" v-if="isDefault">
         <div class="product-info__buttons">
           <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove" :readonly="!isDefault"></button>
-          <button class="btn btn-success btn-sm product-info__btn-add" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
+          <button class="btn btn-success btn-sm product-info__btn-add text-nowrap" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
         </div>
-    </form>
+      </th>
+      <td v-else>
+        <div class="product-info__buttons">
+          <button class="btn btn--icon-remove" v-show="!isDefault" @click="sendProductToRemove" :readonly="!isDefault"></button>
+          <button class="btn btn-success btn-sm product-info__btn-add text-nowrap" @click="sendProductToSave" :readonly="!isDefault">Save product</button>
+        </div>
+      </td>
+  </tr>
 </template>
 
 <script>
@@ -40,6 +88,7 @@ export default {
   },
   props: {
     isDefault: Boolean,
+    index: Number,
     name: String,
     price: Number,
     weightAmount: Number,
@@ -88,21 +137,9 @@ export default {
 
 <style scoped lang="scss">
 .product-info {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: .5rem .7rem;
-
-  &:hover {
-    background-color: #efefef;
-  }
-
-  &::before {
-    content: counter(product-counter) ".";
-    margin-right: 1rem;
-    font-size: 1.3rem;
-    color: #ccc;
-  }
+  // &:hover {
+  //   background-color: #efefef;
+  // }
 
   &__name {
     width: 25rem;
@@ -134,9 +171,17 @@ export default {
     align-items: center;
   }
   &__btn-add {
-    width: 5.87rem;
     margin-left: .4rem;
   }
+
+  th, td {
+    vertical-align: middle;
+  }
+}
+
+.product .form-control {
+  height: 2rem;
+  line-height: 1;
 }
 
 .btn {
