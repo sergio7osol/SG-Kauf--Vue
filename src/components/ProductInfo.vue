@@ -79,7 +79,7 @@ export default {
         localPrice: this.price,
         localDiscount: this.discount,
         ValueCollection: {
-          names: ['Deli.Schw.Braten', 'Tilsiter 45% Sch', 'JA! Maasdamer', 'Steinofenbrot', 'Sonnenkern', 'Zitrone', 'Banane', 'Heidelbeere', 'Obst/Gemuese', 'Salatgurke', 'Feine Butter', 'Wiedemilch 3.9%', 'Kefir Natur 1.5%', 'Speisequark Mag.', 'Ofenfr. BBQ-Pork', 'Schlaf+Nerventee', 'Miracel Whip', 'Gelee-Bananen', 'Interdentalb.Bl.', 'Pflaumenberliner', 'Berliner', 'Nußschnitte', 'Rohlfs Rusti', 'Haeh. Unterkeulen', 'Weihn. Chocolade', 'Santa Glamour', 'Gelee Baum', 'Pfeffersalami', 'Wacholderschinke', 'Muen. Weisswurst', 'JA! Emmentaler', 'JA! Mozzarella', 'Vital und fit', 'Muerbetorteletts', 'Rauecherlachs', 'Makrele geraeuch.', 'Ofenbaguette F.', 'Orange', 'Clementine', 'Mango', 'Kaki', 'Kartoffeln', 'Karotte', 'Rote Bete frisch', 'Eier Freil. Weiss', 'Kernige Flocken', 'Appel Heringsfil.', 'Hering Tomate', 'Hering Paprika', 'Ananasstücke', 'Classic Paprika', 'Sour Cream', 'Coca-Cola', 'Pfand', 'Rotk. Alkoholfrei', 'Lenor Weichspue', 'Somat Klarsp.', 'JA Spezialsalz', 'Leergut Einweg', 'Leerg. MW V. ST', 'Farmerschinken', 'Cavi Art Classic', 'Fleisch Tortell.', 'Ananas /Costa Rica', 'Avocado Vorger.', 'Champignons', 'Elmex Gelee Gel', 'Glade Gel Lufterfrischer', 'Blätterteig Kirschkissen', 'Dragee Mandeln/Haselnüsse', 'Bledn-a-med Zahncreme', 'Makrelenf. geräuchert', 'Kandierter Ingwer, Sort.', 'Mousse au Chocolat', 'Königin Pasteten', 'Hackfleisch gemischt', 'Mumm Alkoholfrei', 'Rotk. Rose Alkoholfrei', 'Henkell Alkoholfrei', 'Sebamed Intim Waschgel', 'Durex Überrasch" Mich', 'Naturebox Spülung', 'Glade Autom. Spray', 'Domestos WC-Gel', 'Schmutzradierer', 'Frosch Oase Orange', 'Cillit Bang WC-St.', 'Hähnchen Unterschenkel', 'Räucherhaus Holz', 'Mütze Wmann', 'Schneewatte', 'White tree MIDI', 'Zierband WH', 'Weihnachtsdeko', 'Bilderrahmen 10x15', 'Höhrgerätbat813450', 'Weinkäse', 'Amarettino Dessert', 'Dilek Helva Pist.', 'Dilek Helva Kakao', 'KBio. Bandnudeln', 'Seeb. Walnusskerne', 'Ingwer', 'Lays Gesalzen', 'Pringles Original', 'Almondy Daim Torte', 'Mehrkornbrot', 'KLC Salami', 'Ungarische Salami', 'Sanpellegrino Dose', 'Schweineschnitzel', 'Euroshop Artikel', 'Möven.Sahnepudding', 'Hansano Weidemilch', 'Fol Epi Scheiben', 'Bamb. Sambal Manis', 'Erfrischungsgetränk', 'K.Wiener Saitling', 'Uludag Getränk', 'Kart. Back-Grill', 'Bäckfisch-Stäbchen', 'Katenschnitten', 'K-FAV Lachs Carpaccio', 'K.Bierschinken', 'KLC. Schinken Gyros', 'Wacholderschinke', 'Hänchenbrust', 'Traub. Dun. Kernl.', 'Kiwi', 'Zwiebel', 'Eier', 'Farfalle Al Bro', 'Fusil Tricol Bro', 'Kernige Flocken', 'Pfeffer Sw. Gem.', 'Haushaltsschwamm', 'Tablett 30cm Edel', 'Salami', 'Camembert', 'Prosciutto', 'Lindt Creation Himbeere De Luxe', 'Gum Full Fruit', 'A+Z Scheiben', 'Hafergeb. Rosine', 'Nylon-Tuff', 'Nivea Intimo Waschlotion Sensitive', 'Sammelbox', 'Gewürzstreuer', 'Hänchenfilet', 'Delikatess Kochschinken', 'Sahne-Hefi Natur', 'Kräuterbutter-Baguette', 'Mandarine', 'Granatapel', 'Weidebutter Sues', 'Naturjogh. 3.5%', 'Prosciutto', 'Beerenmuesli', 'Kirschkonfituere', 'Sour Cre. & Oni.', 'Pistazien Gesalzen'],
+          names: [],
           measures: ['piece', 'kg']      
         }
       };
@@ -130,9 +130,38 @@ export default {
       console.log('sendProductToRemove product: ', product);
 
       this.$emit('remove-product', product);
+    },
+    getProductNames() {
+      const thisApp = this;
+
+      fetch('http://localhost:3030/get-product-names')
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' + response.status);
+              return;
+            }
+
+            response.json().then(function(data) {
+              if (!(data instanceof Array)) {
+                console.log('Product names should be an Array of Strings. Got no products. Returns...');
+
+                return false;
+              }
+
+              thisApp.ValueCollection.names = data;
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
     }
+  },
+  created: function () {
+    this.getProductNames();
   }
-}; // Format: { date,  time, currency, address: { index, street, houseNumber }, payMethod, shopName, products: [] };
+};
 </script>
 
 <style scoped lang="scss">
