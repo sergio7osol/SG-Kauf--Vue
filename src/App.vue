@@ -130,7 +130,7 @@ export default {
             }
 
             response.json().then(function(data) {
-              console.log('data NEW: ', data);
+              console.log('dates: ', data.length);
               data.forEach(date => {
                 dates.push(date);
               });
