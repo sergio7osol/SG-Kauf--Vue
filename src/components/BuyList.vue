@@ -21,9 +21,9 @@ export default {
         country: "Germany",
         address: {
             city: "Hamburg",
-            index: "22307",
-            street: "Fuhlsbuettler Str.",
-            houseNumber: "387"
+            index: "",
+            street: "",
+            houseNumber: ""
         },
         payMethod: "EC card",
         shopName: "REWE",
@@ -42,10 +42,16 @@ export default {
 
 <style scoped lang="scss">
   .buy-list {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 3.5rem;
+
     &__items {
       counter-reset: buy-counter;
       align-items: stretch;
       list-style-type: none;
+
     }
   } 
 </style>

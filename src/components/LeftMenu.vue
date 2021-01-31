@@ -1,6 +1,6 @@
 <template>
-  <nav id="sidebarMenu" class="d-md-block bg-dark sidebar collapse vertical-menu">
-      <div class="position-sticky pt-3">
+  <nav id="sidebarMenu" class="d-md-block sidebar collapse vertical-menu">
+      <div class="pt-3 pb-3">
         <ul class="nav flex-column vertical-menu__list">
           <li class="nav-item vertical-menu__item" v-for="item in dates" :key="item.date">
             <a class="nav-link vertical-menu__item-link" :class="{'vertical-menu__item-link--active': item.date === activeItem}" @click="chooseDate(item.date)" aria-current="page" href="#">
@@ -49,9 +49,8 @@ export default {
     margin: 40px 0 0;
   }
   .vertical-menu {
-    background-color: #2E2E2E;
     padding: 0;
-    min-height: calc(100vh - 2.5rem);
+    background-color: #343a40;
 
     &__item {
       &--active {
