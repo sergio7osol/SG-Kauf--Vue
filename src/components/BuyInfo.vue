@@ -68,11 +68,11 @@ export default {
         localProducts: this.products,
         ValueCollection: {
             countries: ['Germany', 'Russia'],
-            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel'], 
+            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel'], 
             indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249'],
             cities: ['Hamburg', 'Moscow', 'Saransk'],
             streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße'],
-            houseNumbers: ['387', '8', '13-15', '2', '39', '300', '70', '116-122', '4-8'],
+            houseNumbers: ['387', '8', '13-15', '2', '39', '300', '70', '116-122', '4-8', '30-40'],
             currencies: ['EUR', 'RUB'],
             payMethods: ['EC card', 'Cash']
         }
@@ -361,7 +361,7 @@ export default {
   }
   &__shop-name {
     margin-right: 1.5rem;
-    width: 6rem;
+    width: 7rem;
   }
   &__city {
     width: 8rem;
