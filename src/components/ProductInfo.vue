@@ -15,15 +15,15 @@
       </td>
 
       <th scope="col" v-if="isDefault">
-        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
+        <input class="form-control product-info__price" v-model.number="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
       </th>
       <td v-else>
-        <input class="form-control product-info__price" v-model="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
+        <input class="form-control product-info__price" v-model.number="localPrice" placeholder="Price" step="0.01" :readonly="!isDefault" type="number" />
       </td>
 
       <th scope="col" v-if="isDefault">
         <div class="product-info__weight-and-measure">
-          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
+          <input class="form-control product-info__weight-amount" v-model.number="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
           <select class="form-control custom-select product-info__measure" v-model="localMeasure" :disabled="!isDefault">
               <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
           </select>
@@ -31,7 +31,7 @@
       </th>
       <td v-else>
         <div class="product-info__weight-and-measure">
-          <input class="form-control product-info__weight-amount" v-model="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
+          <input class="form-control product-info__weight-amount" v-model.number="localWeightAmount" placeholder="Amount" step="0.001" :readonly="!isDefault" type="number" />
           <select class="form-control custom-select product-info__measure" v-model="localMeasure" :disabled="!isDefault">
               <option v-for="measureValue in ValueCollection.measures" :key="measureValue + Date.now()">{{ measureValue }}</option>
           </select>
@@ -39,10 +39,10 @@
       </td>
       
       <th scope="col" v-if="isDefault">
-        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
+        <input class="form-control product-info__description" v-model.trim="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
       </th>
       <td v-else>
-        <input class="form-control product-info__description" v-model="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
+        <input class="form-control product-info__description" v-model.trim="localDescription" placeholder="Description" :readonly="!isDefault" type="text" />
       </td>
 
       <th scope="col" v-if="isDefault">
