@@ -209,7 +209,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  z-index: 1;
+  z-index: 3;
 
   .navbar-brand, .nav-link {
     color: #fff;
