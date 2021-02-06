@@ -68,7 +68,7 @@ export default {
         localProducts: this.products,
         ValueCollection: {
             countries: ['Germany', 'Russia'],
-            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'Amazon'], 
+            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'Amazon.de', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'About you', 'Netflix', 'Innovativelanguage.com', 'Mango'], 
             indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249'],
             cities: ['Hamburg', 'Moscow', 'Saransk'],
             streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße'],
