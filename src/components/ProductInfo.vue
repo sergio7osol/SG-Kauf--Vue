@@ -4,9 +4,12 @@
       <th scope="row" class="product-list__number-col" v-else>{{index}}</th>
 
       <th scope="col" v-if="isDefault">
-        <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
-          <option v-for="nameValue in ValueCollection.names" :key="nameValue + Date.now()">{{ nameValue }}</option>
-        </select>
+        <input class="form-control product-info__name" list="product-names" @input="localName = $event.target.value" :readonly="!isDefault" type="text" />
+        <datalist id="product-names">
+          <option v-for="(nameValue, index) in ValueCollection.names" :value="nameValue" :key="nameValue + index" />
+        </datalist>
+        <!-- <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
+        </select> -->
       </th>
       <td v-else>
         <select class="form-control custom-select product-info__name" v-model="localName" :disabled="!isDefault">
