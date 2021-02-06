@@ -1,6 +1,5 @@
 <template>
     <div class="card buy-list__card--default" v-if="isDefault">
-        <h5 class="card-header">New buy</h5>
         <div class="card-body">
             <div class="buy buy--default">
                 <buy-info v-bind="infoFromBuy" isDefault />
