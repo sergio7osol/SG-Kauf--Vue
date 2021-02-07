@@ -2,7 +2,7 @@
   <nav id="sidebarMenu" class="d-md-block sidebar collapse vertical-menu">
       <div class="pt-3 pb-3">
         <ul class="nav flex-column vertical-menu__list">
-          <li class="nav-item vertical-menu__item" v-for="item in dates" :key="item.date">
+          <li class="nav-item vertical-menu__item" v-for="item in datesSortedUp" :key="item.date">
             <a class="nav-link vertical-menu__item-link" :class="{'vertical-menu__item-link--active': item.date === activeItem}" @click="chooseDate(item.date)" aria-current="page" href="#">
               <span class="vertical-menu__count-icon">{{item.count}}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-shopping-cart vertical-menu__item-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
@@ -19,7 +19,8 @@ export default {
   name: 'left-menu',
   data: function() { 
     return {
-      activeItem: null
+      activeItem: null,
+      localDates: this.dates
     }
   },
   props: {
@@ -29,16 +30,41 @@ export default {
     },
   },
   emits: {
-      'load-date' (payload) {
-        if (typeof payload === 'string') return true; // TODO: to vadidate
-      } 
-      // 'end-sending': null
-    },
+    'load-date' (payload) {
+      if (typeof payload === 'string') return true; // TODO: to vadidate
+    } 
+    // 'end-sending': null
+  },
+  computed: {
+    datesSortedUp() {
+      const sortedDates = Array.prototype.sort.call(this.localDates, (a, b) => {
+        const aDate = getDateInMillisec(a.date);
+        const bDate = getDateInMillisec(b.date);
+
+        return aDate - bDate;
+      });
+
+      return sortedDates;
+
+      function getDateInMillisec(dateString) {
+        const dateArr = dateString.split('.');
+        const year = Number(dateArr[2]);
+        const month = Number(dateArr[1]) - 1;
+        const day = Number(dateArr[0]);
+        const dateObj = new Date(year, month, day);
+        const dateNumber = dateObj.getTime();
+
+        return dateNumber;
+      }
+    }
+  },
   methods: {
     chooseDate(date) {
       this.activeItem = date;
       this.$emit('load-date', date);
     }
+  },
+  created: function () {
   }
 };
 </script>
