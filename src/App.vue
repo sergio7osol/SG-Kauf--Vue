@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="col-2 y-auto aside">
-        <whole-sum :amount="wholeSum" :currency="activeCurrency" @get-whole-sum="getWholeSum" /> <!-- TODO: currency exchange      |:dateRange=""|         --> 
+        <sum-calc :amount="calculatedSum" :currency="activeCurrency" @get-calc-sum="getCalcSum" @get-whole-sum="getWholeSum" /> <!-- TODO: currency exchange      |:dateRange=""|         --> 
         <sum :date="activeDate" :amount="activeSum" :currency="activeCurrency" />
       </div>
     </div>
@@ -38,15 +38,15 @@ import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import LeftMenu from './components/LeftMenu.vue';
 import BuyList from './components/BuyList.vue';
-import WholeSum from './components/WholeSum';
 import Sum from './components/Sum';
+import SumCalc from './components/SumCalc';
 
 export default {
   name: 'App',
   data() {
     return {
       title: 'SG-Kauf--Vue',
-      wholeSum: 0,
+      calculatedSum: 0,
       dates: [],
       activeDateBuys: [],
       start: null
@@ -162,6 +162,30 @@ export default {
           console.log('Fetch Error :-S', err);
         });
     },
+    getCalcSum(range) {
+      const thisApp = this;
+
+      console.log('RANGE send: ', range);
+
+      fetch(`http://localhost:3030/get-calc-sum?from=${range.from}&to=${range.to}`)
+        .then(
+          function(response) {
+            if (response.status !== 200) {
+              console.log('Looks like there was a problem. Status Code: ' + response.status);
+              return;
+            }
+
+            response.json().then(function(data) {
+              if (typeof data === 'object' && typeof data.cost === 'number' && typeof data.discount === 'number') {
+                thisApp.calculatedSum = data;
+              }
+            });
+          }
+        )
+        .catch(function(err) {
+          console.log('Fetch Error :-S', err);
+        });
+    },
     getWholeSum() {
       const thisApp = this;
 
@@ -177,7 +201,7 @@ export default {
               const wholeSum = data.wholeSum;
 
               if (wholeSum && typeof wholeSum === 'object' && typeof wholeSum.cost === 'number' && typeof wholeSum.discount === 'number') {
-                thisApp.wholeSum = wholeSum;
+                thisApp.calculatedSum = wholeSum;
               }
             });
           }
@@ -194,7 +218,7 @@ export default {
     LeftMenu,
     BuyList,
     Sum,
-    WholeSum
+    SumCalc
   },
 };
 </script>
