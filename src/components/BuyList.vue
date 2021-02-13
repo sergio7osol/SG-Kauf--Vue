@@ -20,7 +20,7 @@ export default {
         currency: "EUR",
         country: "Germany",
         address: {
-            city: "Hamburg",
+            city: "",
             index: "",
             street: "",
             houseNumber: ""

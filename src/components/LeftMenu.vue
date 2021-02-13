@@ -167,7 +167,7 @@ export default {
         z-index: 2;
         padding: .3rem 1rem;
         line-height: 1;
-        border-bottom: 2px solid #fff;
+        border-bottom: 1px solid #fff;
         cursor: pointer;
       }
 
