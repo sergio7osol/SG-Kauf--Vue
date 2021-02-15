@@ -67,14 +67,14 @@ export default {
         localShopName: this.shopName,
         localProducts: this.products,
         ValueCollection: {
-            countries: ['Germany', 'Russia'],
-            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'Amazon.de', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'About you', 'Netflix', 'Innovativelanguage.com', 'Mango'], 
-            indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249'],
-            cities: ['Hamburg', 'Moscow', 'Saransk'],
-            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße'],
-            houseNumbers: ['387', '8', '13-15', '2', '39', '300', '70', '116-122', '4-8', '30-40'],
+            countries: ['Germany', 'Russia', 'online'],
+            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'Amazon.de', 'Netflix.com', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'About you', 'Netflix', 'Innovativelanguage.com', 'Mango', 'OVB', 'Vodavone GmbH', 'Telekom Deutschland GmbH', 'Ernst Scholz', 'Sparkasse'], 
+            indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249', 'online'],
+            cities: ['Hamburg', 'Moscow', 'Saransk', 'online'],
+            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße', 'online'],
+            houseNumbers: ['387', '8', '13-15', '2', '39', '300', '70', '116-122', '4-8', '30-40', 'online'],
             currencies: ['EUR', 'RUB'],
-            payMethods: ['EC card', 'Cash', 'N26 card']
+            payMethods: ['EC card', 'Cash', 'N26 card', 'PayPal']
         }
     };
 
