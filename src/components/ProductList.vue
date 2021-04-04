@@ -54,7 +54,5 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-  .product-list {
-  }     
+<style scoped lang="scss">    
 </style>
