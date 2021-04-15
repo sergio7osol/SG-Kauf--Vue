@@ -20,7 +20,7 @@
         <div id="spend-track">
           <div class="row">
             <div class="main-content__left-menu">
-              <left-menu :dates='dates' @load-date='getDate' /> 
+              <left-menu :dates='dates' @date-selected='getDate' /> 
             </div>
             <div class="main-content__body col">
               <buy-list :dateBuys="activeDateBuys" />

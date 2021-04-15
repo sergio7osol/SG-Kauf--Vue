@@ -32,7 +32,7 @@ export default {
     },
   },
   emits: {
-    'load-date' (payload) {
+    'date-selected' (payload) {
       if (typeof payload === 'string') return true; // TODO: to vadidate
     } 
     // 'end-sending': null
@@ -88,7 +88,7 @@ export default {
   methods: {
     chooseDate(date) {
       this.activeItem = date;
-      this.$emit('load-date', date);
+      this.$emit('date-selected', date);
     },
     getMonthString(monthNumber) {
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
