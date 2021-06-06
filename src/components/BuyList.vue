@@ -2,7 +2,7 @@
   <div class="buy-list">
     <buy :buy="emptyBuy" isDefault />
     <ul class="list-group list-group-flush buy-list__items">
-      <buy v-for="(buy, i) in dateBuys" :buy="buy" :key="buy.date + Date.now() + i" />
+      <buy v-for="(buy, i) in dateBuys" :buy="buy" @retrigger-save-product="transferProductDataForSaving(buy.date, buy.time, $event)" :key="buy.date + Date.now() + i" />
     </ul>
   </div>
 </template>
@@ -34,6 +34,19 @@ export default {
   props: {
     dateBuys: Array
   },
+  emits: ['transfer-save-product'],
+  methods: {
+    transferProductDataForSaving(date, time, product) {
+      // product data + date + time - for full identification of the product
+      const productInfoForSave = {
+        date, 
+        time,
+        product
+      };
+
+      this.$emit('transfer-save-product', productInfoForSave); 
+    }
+  }, 
   components: {
     Buy
   }

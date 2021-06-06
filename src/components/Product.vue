@@ -1,5 +1,5 @@
 <template>
-    <product-info v-bind="product" isDefault @save-product="retriggerSendProductToSave" v-if="isDefault" /> 
+    <product-info v-bind="product" isDefault @save-product="retriggerSaveProduct" v-if="isDefault" /> 
     <product-info v-bind="product" :index="index + 1" @remove-product="retriggerSendProductToRemove" v-else /> <!-- TODO: remove @save-product -->
 </template>
 
@@ -16,13 +16,12 @@ export default {
     index: Number,
     isDefault: Boolean
   },
-  emits: ['save-product', 'remove-product'],
+  emits: ['retrigger-save-product', 'remove-product'],
   methods: {
-      retriggerSendProductToSave(product) {
-          this.$emit('save-product', product);
+      retriggerSaveProduct(product) {
+          this.$emit('retrigger-save-product', product);
       },
       retriggerSendProductToRemove(product) {
-          console.log('product: ', product);
           this.$emit('remove-product', product);
       }
   },

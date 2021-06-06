@@ -20,10 +20,10 @@
         <div id="spend-track">
           <div class="row">
             <div class="main-content__left-menu">
-              <left-menu :dates='dates' @date-selected='getDate' /> 
+              <left-menu :dates='dates' @date-selected='getDate' :key="Date.now()" /> 
             </div>
             <div class="main-content__body col">
-              <buy-list :dateBuys="activeDateBuys" />
+              <buy-list :dateBuys="activeDateBuys" @transfer-save-product="saveProduct" />
             </div>
           </div>
         </div>
@@ -148,6 +148,13 @@ export default {
       let thisApp = this;
       let newDate = e;
 
+      const dateToSelect = thisApp.dates.find(item => item.date === newDate);
+
+      if (dateToSelect.buys) {
+        this.activeDateBuys = dateToSelect.buys.slice();
+        return true;
+      }
+
       fetch(`http://localhost:3030/read-date?date=${newDate}`)
         .then(
           function(response) {
@@ -157,13 +164,17 @@ export default {
             }
 
             response.json().then(function(data) {
-              thisApp.activeDateBuys = data;
+              dateToSelect.buys = data;
+              thisApp.activeDateBuys = dateToSelect.buys;
             });
           }
         )
         .catch(function(err) {
           console.log('Fetch Error :-S', err);
         });
+    },
+    addProductToDates: function () {
+      this.getAllDates();
     },
     getCalcSum(range) {
       const thisApp = this;
@@ -212,6 +223,83 @@ export default {
         .catch(function(err) {
           console.log('Fetch Error :-S', err);
         });
+    },
+    saveProduct(productInfoForSave) {
+      console.log('App -> productInfoForSave: ', productInfoForSave);
+        const thisApp = this;
+        const date = productInfoForSave.date;
+        const time = productInfoForSave.time;
+        let { name, price, weightAmount, measure, description, discount } = productInfoForSave.product;
+        let url = `http://localhost:3030/save-product?date=${date}&time=${time}`;
+
+        name = encodeURIComponent(name);
+
+        url += name ? `&name=${name}` : '';
+        url += price ? `&price=${price}` : '';
+        url += weightAmount ? `&weightAmount=${weightAmount}` : '';
+        url += measure ? `&measure=${measure}` : '';
+        url += description ? `&description=${description}` : '';
+        url += discount ? `&discount=${discount}` : '';
+
+        fetch(url)
+            .then((response) => {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+
+                response.json().then(function (data) {
+                    if (response.status !== 200) {
+                        console.log('Error. Program stops. ', data.error);
+                        return false;
+                    } else {
+                      const dateToAddProductTo = thisApp.dates && thisApp.dates.find(buyDate => buyDate.date === date);
+                      if (!dateToAddProductTo) {
+                        console.log(`Date ${date} to add the product to - is not found`);
+                        return false;
+                      }
+
+                      const buyToAddProductTo = dateToAddProductTo && dateToAddProductTo.buys && dateToAddProductTo.buys.find(buy => buy.time === time);
+                      if (!buyToAddProductTo) {
+                        console.log(`Buy at ${time} to add the product to - is not found`);
+                        return false;
+                      }
+
+                      buyToAddProductTo.products = data;
+
+                      // react to changed products if same date is active
+                      thisApp.displayNewProductState(thisApp.activeDateBuys, buyToAddProductTo, dateToAddProductTo);
+                    }
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+    },
+    countDateProducts() {
+      return this.activeDateBuys.reduce((acc, v) => acc + v.products.length, 0);
+    },
+    // utils
+    displayNewProductState(activeDateBuys, buyWithAddedProduct, dateToAddProductTo) {
+      const activeDate = activeDateBuys && activeDateBuys[0] && activeDateBuys[0].date;
+      const changedBuyDate = buyWithAddedProduct.date;
+      let activeProductAmount = null;
+
+      if (activeDate !== changedBuyDate) { 
+        console.log(`Date ${changedBuyDate} which was added the product is not active anymore.`);
+        return false;
+      }
+
+      const activeDateBuyToUpdate = activeDateBuys.find(buy => buy.time === buyWithAddedProduct.time);
+      if (!activeDateBuyToUpdate) {
+        console.log(`No buy at ${buyWithAddedProduct.time} for the active date ${activeDate} was found.`);
+        return false;
+      }
+
+      activeDateBuyToUpdate.products = buyWithAddedProduct.products;
+      activeProductAmount = this.countDateProducts();
+      // save the new amount of products for a particular date: 
+      dateToAddProductTo.count = activeProductAmount;
     }
   },
   created: function () {

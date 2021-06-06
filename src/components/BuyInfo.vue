@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="localProducts" @save-product="saveProduct" @remove-product="removeProduct" />
+        <product-list :buyProducts="localProducts" @retrigger-save-product="retriggerSaveProduct" @remove-product="removeProduct" />
     </div>
   </form>
 </template>
@@ -147,6 +147,7 @@ export default {
     },
     isDefault: Boolean
   },
+  emits: ['retrigger-save-product'],
   watch: {
   },
   computed: {
@@ -244,41 +245,8 @@ export default {
           console.log('Fetch Error :-S', err);
         });
     },
-    saveProduct(product) {
-        const thisApp = this;
-        const date = this.localDate;
-        const time = this.localTime;
-        let { name, price, weightAmount, measure, description, discount } = product;
-        let url = `http://localhost:3030/save-product?date=${date}&time=${time}`;
-
-        name = encodeURIComponent(name);
-
-        url += name ? `&name=${name}` : '';
-        url += price ? `&price=${price}` : '';
-        url += weightAmount ? `&weightAmount=${weightAmount}` : '';
-        url += measure ? `&measure=${measure}` : '';
-        url += description ? `&description=${description}` : '';
-        url += discount ? `&discount=${discount}` : '';
-
-        fetch(url)
-            .then((response) => {
-                if (response.status !== 200) {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status);
-                    return;
-                }
-
-                response.json().then(function (data) {
-                    if (response.status !== 200) {
-                        console.log('Error. Program stops. ', data.error);
-                        return false;
-                    } else {
-                        thisApp.localProducts = data;
-                    }
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
+    retriggerSaveProduct(product) {
+      this.$emit('retrigger-save-product', product);
     },
     removeProduct(product) {
         let thisApp = this;

@@ -233,8 +233,6 @@ export default {
         discount: this.localDiscount,
       };
 
-      console.log("sendProductToSave product: ", product);
-
       this.$emit("save-product", product);
     },
     sendProductToRemove() {
