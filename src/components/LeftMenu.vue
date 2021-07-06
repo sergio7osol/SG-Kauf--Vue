@@ -5,7 +5,13 @@
           <li class="nav-item vertical-menu__item" v-for="item in datesSortedUp" :key="item.date">
             <span v-if="item.year" class="vertical-menu__item-year">{{item.year}}</span>
             <span v-if="item.month" class="vertical-menu__item-month">{{getMonthString(item.month)}}</span>
-            <a v-if="item.date" class="nav-link vertical-menu__item-link" :class="{'vertical-menu__item-link--active': item.date === activeItem}" @click="chooseDate(item.date)" aria-current="page" href="#">
+            <a v-if="item.date" 
+              class="nav-link vertical-menu__item-link" 
+              :class="{'vertical-menu__item-link--active': item.date === activeItem}" 
+              @click.prevent="chooseDate(item.date)" 
+              aria-current="page" 
+              href="#"
+            >
               <span class="vertical-menu__count-icon">{{item.count}}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-shopping-cart vertical-menu__item-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
               <span class="vertical-menu__item-text">{{item.date}}</span>
@@ -21,8 +27,7 @@ export default {
   name: 'left-menu',
   data: function() { 
     return {
-      activeItem: null,
-      localDates: this.dates
+      activeItem: null
     }
   },
   props: {
@@ -39,14 +44,20 @@ export default {
   },
   computed: {
     datesSortedUp() {
-      const sortedDates = Array.prototype.sort.call(this.localDates, (a, b) => {
-        const aDate = getDateInMillisec(a.date);
-        const bDate = getDateInMillisec(b.date);
+      const datesCopy = this.dates.slice();
+      const sortedDates = Array.prototype.sort.call(datesCopy, (a, b) => {
+        let aDate = null;
+        let bDate = null;
+
+        if (!a.date || !b.date) return 0;
+
+        aDate = getDateInMillisec(a.date)
+        bDate = getDateInMillisec(b.date);
 
         return aDate - bDate;
       });
       
-      // go through and add month separators
+      // go through and add year/month separators
       sortedDates.reduce((acc, v, i, src) => {
         let dateArr = null;
         let year = null;
