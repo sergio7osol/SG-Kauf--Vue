@@ -7,7 +7,10 @@
             <span v-if="item.month" class="vertical-menu__item-month">{{getMonthString(item.month)}}</span>
             <a v-if="item.date" 
               class="nav-link vertical-menu__item-link" 
-              :class="{'vertical-menu__item-link--active': item.date === activeItem}" 
+              :class="{
+                'vertical-menu__item-link--active': item.date === selectedDate,
+                'vertical-menu__item--loading': item.date === loadingDate
+              }" 
               @click.prevent="chooseDate(item.date)" 
               aria-current="page" 
               href="#"
@@ -27,7 +30,7 @@ export default {
   name: 'left-menu',
   data: function() { 
     return {
-      activeItem: null
+      loadingDate: false
     }
   },
   props: {
@@ -35,12 +38,15 @@ export default {
       type: Array,
       required: true
     },
+    selectedDate: {
+      type: [String, Boolean],
+      required: true
+    },
   },
   emits: {
     'date-selected' (payload) {
       if (typeof payload === 'string') return true; // TODO: to vadidate
     } 
-    // 'end-sending': null
   },
   computed: {
     datesSortedUp() {
@@ -98,7 +104,7 @@ export default {
   },
   methods: {
     chooseDate(date) {
-      this.activeItem = date;
+      this.loadingDate = date;
       this.$emit('date-selected', date);
     },
     getMonthString(monthNumber) {
@@ -127,7 +133,21 @@ export default {
         background-color: #dde;  
         border: 1px solid #bb88;
       }
-
+      &--loading {
+        &:before {
+          content: " ";
+          position: absolute;
+          right: .07rem;
+          border-radius: 50%;
+          width: 0;
+          height: 0;
+          margin: .2rem;
+          box-sizing: border-box;
+          border: .7rem solid currentColor;
+          border-color: currentColor transparent currentColor transparent;
+          animation: lds-hourglass 1.2s infinite;
+        } 
+      }
       &-link {
         display: flex;
         align-items: center;
@@ -169,7 +189,6 @@ export default {
           }
         }
       }
-
       &-year, &-month {
         display: block;
         background-color: #dedede;
@@ -181,21 +200,17 @@ export default {
         border-bottom: 1px solid #fff;
         cursor: pointer;
       }
-
       &-year {
         font-size: .8rem;
       }
-
       &-month {
         font-size: 1rem;
       }
     }
-
     &__item-icon {
       position: absolute;
       left: 1rem;
     }
-
     &__count-icon {
       position: absolute;
       top: 0;
@@ -213,6 +228,19 @@ export default {
       text-align: center;
       vertical-align: middle;
       z-index: 1;
+    }
+  }
+  @keyframes lds-hourglass {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+      transform: rotate(900deg);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+      transform: rotate(1800deg);
     }
   }
 </style>
