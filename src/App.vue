@@ -52,8 +52,17 @@ export default {
       calculatedSum: 0,
       dates: [],
       activeDateBuys: [],
-      start: null
-    };
+      ValueCollection: {
+        names: [],
+        defaults: [],
+        measures: ["piece", "kg"]
+      }
+    }
+  },
+  provide() {
+    return {
+      ValueCollection: this.ValueCollection
+    }
   },
   computed: {
     activeDate() {
@@ -278,6 +287,54 @@ export default {
     countDateProducts() {
       return this.activeDateBuys.reduce((acc, v) => acc + v.products.length, 0);
     },
+    getProductNames() {
+      const thisApp = this;
+
+      fetch("http://localhost:3030/get-product-names")
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.error("Looks like there was a problem. Status Code: " + response.status);
+            return;
+          }
+
+          response.json().then(function (data) {
+            if (!(data instanceof Array)) {
+              console.error("Product names should be an Array of Strings. Got no products. Returns...");
+              return false;
+            }
+            thisApp.ValueCollection.names = data;
+          });
+        })
+        .catch(function (err) {
+          console.error("getProductNames, Fetch Error :-S", err);
+        });
+    },
+    getProductDefaults() {
+      const thisApp = this;
+
+      fetch("http://localhost:3030/get-product-defaults")
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.log("Looks like there was a problem. Status Code: " + response.status);
+            return;
+          }
+
+          response.json().then(function (data) {
+            if (!(data instanceof Array)) {
+              console.log(
+                "Product defaults should be an Array of Objects. Got no product defaults. Returns..."
+              );
+
+              return false;
+            }
+
+            thisApp.ValueCollection.defaults = data;
+          });
+        })
+        .catch(function (err) {
+          console.log("getProductDefaults, Fetch Error :-S", err);
+        });
+    },
     // utils
     displayNewProductState(activeDateBuys, buyWithAddedProduct, dateToAddProductTo) {
       const activeDate = activeDateBuys && activeDateBuys[0] && activeDateBuys[0].date;
@@ -304,6 +361,8 @@ export default {
   },
   created: function () {
     this.getAllDates();
+    this.getProductNames();
+    this.getProductDefaults();
   },
   components: {
     LeftMenu,

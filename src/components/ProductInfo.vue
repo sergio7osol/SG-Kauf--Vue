@@ -196,16 +196,12 @@ export default {
       localWeightAmount: this.weightAmount,
       localMeasure: this.measure,
       localPrice: this.price,
-      localDiscount: this.discount,
-      ValueCollection: {
-        names: [],
-        defaults: [],
-        measures: ["piece", "kg"],
-      },
+      localDiscount: this.discount
     };
 
     return dataState;
   },
+  inject: ['ValueCollection'],
   props: {
     isDefault: Boolean,
     index: Number,
@@ -249,55 +245,6 @@ export default {
 
       this.$emit("remove-product", product);
     },
-    getProductNames() {
-      const thisApp = this;
-
-      fetch("http://localhost:3030/get-product-names")
-        .then(function (response) {
-          if (response.status !== 200) {
-            console.error("Looks like there was a problem. Status Code: " + response.status);
-            return;
-          }
-
-          response.json().then(function (data) {
-            if (!(data instanceof Array)) {
-              console.error("Product names should be an Array of Strings. Got no products. Returns...");
-              return false;
-            }
-
-            thisApp.ValueCollection.names = data;
-          });
-        })
-        .catch(function (err) {
-          console.error("getProductNames, Fetch Error :-S", err);
-        });
-    },
-    getProductDefaults() {
-      const thisApp = this;
-
-      fetch("http://localhost:3030/get-product-defaults")
-        .then(function (response) {
-          if (response.status !== 200) {
-            console.log("Looks like there was a problem. Status Code: " + response.status);
-            return;
-          }
-
-          response.json().then(function (data) {
-            if (!(data instanceof Array)) {
-              console.log(
-                "Product defaults should be an Array of Objects. Got no product defaults. Returns..."
-              );
-
-              return false;
-            }
-
-            thisApp.ValueCollection.defaults = data;
-          });
-        })
-        .catch(function (err) {
-          console.log("getProductDefaults, Fetch Error :-S", err);
-        });
-    },
     productAutocomplete(event) {
       const currentValue = event.target.value;
       const foundDefault = find(this.ValueCollection.defaults, function (defaultProductInfo) {
@@ -329,9 +276,7 @@ export default {
     }
   },
   created: function () {
-    this.getProductNames();
-    this.getProductDefaults();
-  },
+  }
 };
 </script>
 
