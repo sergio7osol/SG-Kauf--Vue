@@ -255,18 +255,13 @@ export default {
       fetch("http://localhost:3030/get-product-names")
         .then(function (response) {
           if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
+            console.error("Looks like there was a problem. Status Code: " + response.status);
             return;
           }
 
           response.json().then(function (data) {
             if (!(data instanceof Array)) {
-              console.log(
-                "Product names should be an Array of Strings. Got no products. Returns..."
-              );
-
+              console.error("Product names should be an Array of Strings. Got no products. Returns...");
               return false;
             }
 
@@ -274,7 +269,7 @@ export default {
           });
         })
         .catch(function (err) {
-          console.log("Fetch Error :-S", err);
+          console.error("getProductNames, Fetch Error :-S", err);
         });
     },
     getProductDefaults() {
@@ -283,9 +278,7 @@ export default {
       fetch("http://localhost:3030/get-product-defaults")
         .then(function (response) {
           if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
+            console.log("Looks like there was a problem. Status Code: " + response.status);
             return;
           }
 
@@ -302,7 +295,7 @@ export default {
           });
         })
         .catch(function (err) {
-          console.log("Fetch Error :-S", err);
+          console.log("getProductDefaults, Fetch Error :-S", err);
         });
     },
     productAutocomplete(event) {

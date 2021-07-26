@@ -20,7 +20,7 @@
         <div id="spend-track">
           <div class="row">
             <div class="main-content__left-menu">
-              <left-menu :dates='dates' @date-selected='getDate' />
+              <left-menu :dates='dates' :selected-date='activeDate' @date-selected='getDate' :key='Date.now()' /> 
             </div>
             <div class="main-content__body col">
               <buy-list :dateBuys="activeDateBuys" @transfer-save-product="saveProduct" />
@@ -60,14 +60,14 @@ export default {
       try {
         return this.activeDateBuys[0].date;
       } catch (error) {
-        return 'No date selected';
+        console.warn('No date selected');
+        return false;
       }
     },
     activeSum() {
       const sum = this.activeDateBuys.reduce((buySum, buy) => {
         const products = buy.products; 
         let resultProductSum = null;
-
         if (products) {
           resultProductSum = products.reduce((productSum, product) => {
             const { price, weightAmount, discount } = product;
@@ -141,7 +141,7 @@ export default {
           }
         )
         .catch(function(err) {
-          console.log('Fetch Error :-S', err);
+          console.log('getAllDates', 'Fetch Error :-S', err);
         });
     },
     getDate: function(e) {
@@ -165,12 +165,12 @@ export default {
 
             response.json().then(function(data) {
               dateToSelect.buys = data;
-              thisApp.activeDateBuys = dateToSelect.buys;
+              thisApp.activeDateBuys = dateToSelect.buys.slice(); 
             });
           }
         )
         .catch(function(err) {
-          console.log('Fetch Error :-S', err);
+          console.log('getDate', 'Fetch Error :-S', err);
         });
     },
     addProductToDates: function () {
@@ -197,7 +197,7 @@ export default {
           }
         )
         .catch(function(err) {
-          console.log('Fetch Error :-S', err);
+          console.log('getCalcSum', 'Fetch Error :-S', err);
         });
     },
     getWholeSum() {
@@ -221,11 +221,10 @@ export default {
           }
         )
         .catch(function(err) {
-          console.log('Fetch Error :-S', err);
+          console.log('getWholeSum', 'Fetch Error :-S', err);
         });
     },
     saveProduct(productInfoForSave) {
-      console.log('App -> productInfoForSave: ', productInfoForSave);
         const thisApp = this;
         const date = productInfoForSave.date;
         const time = productInfoForSave.time;
@@ -249,19 +248,19 @@ export default {
                 }
 
                 response.json().then(function (data) {
-                    if (response.status !== 200) {
-                        console.log('Error. Program stops. ', data.error);
+                  if (response.status !== 200) {
+                    console.log('Error. Program stops. ', data.error);
                         return false;
                     } else {
-                      const dateToAddProductTo = thisApp.dates && thisApp.dates.find(buyDate => buyDate.date === date);
+                      const dateToAddProductTo = thisApp.dates?.find(buyDate => buyDate.date === date);
                       if (!dateToAddProductTo) {
-                        console.log(`Date ${date} to add the product to - is not found`);
+                        console.error(`Date ${date} to add the product to - is not found`);
                         return false;
                       }
 
-                      const buyToAddProductTo = dateToAddProductTo && dateToAddProductTo.buys && dateToAddProductTo.buys.find(buy => buy.time === time);
+                      const buyToAddProductTo = dateToAddProductTo.buys?.find(buy => buy.time === time);
                       if (!buyToAddProductTo) {
-                        console.log(`Buy at ${time} to add the product to - is not found`);
+                        console.error(`Buy at ${time} to add the product to - is not found`);
                         return false;
                       }
 
@@ -273,7 +272,7 @@ export default {
                 });
             })
             .catch(function (err) {
-                console.log('Fetch Error :-S', err);
+                console.log('saveProduct', 'Fetch Error :-S', err);
             });
     },
     countDateProducts() {
@@ -286,7 +285,7 @@ export default {
       let activeProductAmount = null;
 
       if (activeDate !== changedBuyDate) { 
-        console.log(`Date ${changedBuyDate} which was added the product is not active anymore.`);
+        console.log(`Date ${changedBuyDate} which was added the product is not active anymore. Product added in the background.`);
         return false;
       }
 
@@ -296,8 +295,9 @@ export default {
         return false;
       }
 
-      activeDateBuyToUpdate.products = buyWithAddedProduct.products;
+      activeDateBuyToUpdate.products = JSON.parse(JSON.stringify(buyWithAddedProduct.products));
       activeProductAmount = this.countDateProducts();
+      console.log(dateToAddProductTo,activeProductAmount);
       // save the new amount of products for a particular date: 
       dateToAddProductTo.count = activeProductAmount;
     }
