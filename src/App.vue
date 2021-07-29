@@ -273,7 +273,7 @@ export default {
                         return false;
                       }
 
-                      buyToAddProductTo.products = data;
+                      buyToAddProductTo.products = data; // saving in 'dates'
 
                       // react to changed products if same date is active
                       thisApp.displayNewProductState(thisApp.activeDateBuys, buyToAddProductTo, dateToAddProductTo);
@@ -281,7 +281,7 @@ export default {
                 });
             })
             .catch(function (err) {
-                console.log('saveProduct', 'Fetch Error :-S', err);
+                console.log('Fetch Error :-S', err);
             });
     },
     countDateProducts() {
@@ -342,7 +342,7 @@ export default {
       let activeProductAmount = null;
 
       if (activeDate !== changedBuyDate) { 
-        console.log(`Date ${changedBuyDate} which was added the product is not active anymore. Product added in the background.`);
+        console.log(`Date ${changedBuyDate} which was added the product to is not active anymore. Product already added to local data, nothing more to do.`);
         return false;
       }
 
@@ -354,7 +354,6 @@ export default {
 
       activeDateBuyToUpdate.products = JSON.parse(JSON.stringify(buyWithAddedProduct.products));
       activeProductAmount = this.countDateProducts();
-      console.log(dateToAddProductTo,activeProductAmount);
       // save the new amount of products for a particular date: 
       dateToAddProductTo.count = activeProductAmount;
     }

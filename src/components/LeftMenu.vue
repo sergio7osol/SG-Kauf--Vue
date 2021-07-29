@@ -113,8 +113,6 @@ export default {
       
       return monthNames[monthNumber];
     }
-  },
-  created: function () {
   }
 };
 </script>

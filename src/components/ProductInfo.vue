@@ -156,9 +156,10 @@
         ></button>
         <button
           class="btn btn-success btn-sm product-info__btn-add text-nowrap"
-          @click="sendProductToSave"
+          @click.prevent="sendProductToSave"
           :readonly="!isDefault"
           ref="productButton"
+          type="button"
         >
           Save product
         </button>
@@ -169,7 +170,7 @@
         <button
           class="btn btn--icon-remove"
           v-show="!isDefault"
-          @click="sendProductToRemove"
+          @click.prevent="sendProductToRemove"
           :readonly="!isDefault"
         ></button>
         <button
@@ -274,8 +275,6 @@ export default {
     focusSaveProductButton() {
       this.$refs.productButton.focus();
     }
-  },
-  created: function () {
   }
 };
 </script>
