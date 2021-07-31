@@ -23,7 +23,7 @@
               <left-menu :dates='dates' :selected-date='activeDate' @date-selected='getDate' :key='Date.now()' /> 
             </div>
             <div class="main-content__body col">
-              <buy-list :dateBuys="activeDateBuys" @transfer-save-product="saveProduct" />
+              <buy-list :dateBuys="activeDateBuys" @save-product="saveProduct" />
             </div>
           </div>
         </div>
