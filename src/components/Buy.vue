@@ -8,7 +8,7 @@
         </div>
     </div>
     <li class="buy" v-else>
-        <buy-info v-bind="infoFromBuy" @retrigger-save-product="retriggerSaveProduct" :key="infoFromBuy.date + Date.now()" />
+        <buy-info v-bind="infoFromBuy" @save-product="$attrs.onSaveProduct" :key="infoFromBuy.date + Date.now()" />
     </li>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     },
     isDefault: Boolean
   },
-  emits: ['retrigger-save-product'],
+  emits: [],
   computed: {
       infoFromBuy() {
           const buy = this.buy;
@@ -45,11 +45,7 @@ export default {
         return info;
       }
   },
-  methods: {
-    retriggerSaveProduct(product) {
-        this.$emit('retrigger-save-product', product);
-    }
-  }, 
+  methods: {}, 
   components: {
     BuyInfo
   }

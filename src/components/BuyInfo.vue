@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="localProducts" @retrigger-save-product="retriggerSaveProduct" @remove-product="removeProduct" />
+        <product-list :buyProducts="localProducts" @save-product="$attrs.onSaveProduct" @remove-product="removeProduct" />
     </div>
   </form>
 </template>
@@ -147,7 +147,7 @@ export default {
     },
     isDefault: Boolean
   },
-  emits: ['retrigger-save-product'],
+  emits: [],
   watch: {
   },
   computed: {
@@ -244,9 +244,6 @@ export default {
         .catch(function (err) {
           console.log('Fetch Error :-S', err);
         });
-    },
-    retriggerSaveProduct(product) {
-      this.$emit('retrigger-save-product', product);
     },
     removeProduct(product) {
         let thisApp = this;
