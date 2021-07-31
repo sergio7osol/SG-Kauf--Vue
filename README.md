@@ -1,4 +1,4 @@
-# UI Interface for managing expenses
+# UI Interface Vue.js for managing expenses
 
 ## Project setup
 ```
