@@ -1,4 +1,4 @@
-# 2
+# UI Interface for managing expenses
 
 ## Project setup
 ```
