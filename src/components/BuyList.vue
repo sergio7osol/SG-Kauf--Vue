@@ -4,7 +4,8 @@
     <ul class="list-group list-group-flush buy-list__items">
       <buy v-for="(buy, i) in dateBuys" 
         :buy="buy" 
-        @save-product="(event) => $attrs.onSaveProduct(constructProductDataForSaving(buy.date, buy.time, event))" 
+        @save-product="(event) => $attrs.onSaveProduct(constructProductDataForIdentification(buy.date, buy.time, event))" 
+        @remove-product="(event) => $attrs.onRemoveProduct(constructProductDataForIdentification(buy.date, buy.time, event))" 
         :key="buy.date + Date.now() + i" 
       />
     </ul>
@@ -40,7 +41,7 @@ export default {
   },
   emits: [],
   methods: {
-    constructProductDataForSaving(date, time, product) {
+    constructProductDataForIdentification(date, time, product) {
       // product data + date + time - for full identification of the product
       return {
         date, 

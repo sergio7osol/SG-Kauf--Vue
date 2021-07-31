@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="row" v-show="!isDefault">
-        <product-list :buyProducts="localProducts" @save-product="$attrs.onSaveProduct" @remove-product="removeProduct" />
+        <product-list :buyProducts="localProducts" @save-product="$attrs.onSaveProduct" @remove-product="$attrs.onRemoveProduct" />
     </div>
   </form>
 </template>
@@ -244,48 +244,6 @@ export default {
         .catch(function (err) {
           console.log('Fetch Error :-S', err);
         });
-    },
-    removeProduct(product) {
-        let thisApp = this;
-        const date = this.localDate;
-        const time = this.localTime;
-        let { name, price, weightAmount, measure, description, discount } = product;
-
-        name = encodeURIComponent(name);
-
-        let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${name}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
-        url += description ? `&description=${description}` : '';
-
-        if (confirm('You sure, you want to delete this product?')) {
-            console.log(`Prompted deleting of the product. Confirmed. The product ${name} on ${date} at ${time} is going to be deleted...`);
-        } else {
-            console.log(`Prompted deleting of the product. Rejected. The product ${name} on ${date} at ${time} is NOT going to be deleted.`);
-            return false;
-        }
-
-        fetch(url)
-            .then((response) => {
-                if (response.status !== 200) {
-                    console.log(
-                    'Looks like there was a problem. Status Code: ' + response.status
-                    );
-                    return;
-                }
-
-                response.json().then(function (data) {
-                    console.log('REMOVE data: ', data);
-                    
-                    if (data.success === false) {
-                        console.log('Error. Program stops. ', data.error);
-                        return false;
-                    } else {
-                        thisApp.localProducts = data;
-                    }
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
     }
   },
   components: { 

@@ -242,8 +242,6 @@ export default {
         discount: this.localDiscount,
       };
 
-      console.log("sendProductToRemove product: ", product);
-
       this.$emit("remove-product", product);
     },
     productAutocomplete(event) {

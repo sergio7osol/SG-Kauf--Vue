@@ -11,7 +11,7 @@
             :product="product"
             :index="i"
             :key="product.name + Date.now() + i" 
-            @remove-product="retriggerSendProductToRemove"
+            @remove-product="$attrs.onRemoveProduct"
           /> 
         </tbody>
       </table>
@@ -38,13 +38,8 @@ export default {
   props: {
     buyProducts: Array
   },
-  emits: ['remove-product'],
-  methods: {
-    retriggerSendProductToRemove(product) {
-        console.log('product-list product: ', product);
-        this.$emit('remove-product', product);
-    }
-  },
+  emits: [],
+  methods: {},
   components: {
     Product
   }

@@ -8,7 +8,7 @@
         </div>
     </div>
     <li class="buy" v-else>
-        <buy-info v-bind="infoFromBuy" @save-product="$attrs.onSaveProduct" :key="infoFromBuy.date + Date.now()" />
+        <buy-info v-bind="infoFromBuy" @save-product="$attrs.onSaveProduct" @remove-product="$attrs.onRemoveProduct" :key="infoFromBuy.date + Date.now()" />
     </li>
 </template>
 

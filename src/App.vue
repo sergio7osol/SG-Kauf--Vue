@@ -23,7 +23,7 @@
               <left-menu :dates='dates' :selected-date='activeDate' @date-selected='getDate' :key='Date.now()' /> 
             </div>
             <div class="main-content__body col">
-              <buy-list :dateBuys="activeDateBuys" @save-product="saveProduct" />
+              <buy-list :dateBuys="activeDateBuys" @save-product="saveProduct" @remove-product="removeProduct" />
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default {
       try {
         return this.activeDateBuys[0].date;
       } catch (error) {
-        console.warn('No date selected');
+        console.log('No date selected');
         return false;
       }
     },
@@ -259,30 +259,100 @@ export default {
                 response.json().then(function (data) {
                   if (response.status !== 200) {
                     console.log('Error. Program stops. ', data.error);
-                        return false;
-                    } else {
-                      const dateToAddProductTo = thisApp.dates?.find(buyDate => buyDate.date === date);
-                      if (!dateToAddProductTo) {
-                        console.error(`Date ${date} to add the product to - is not found`);
-                        return false;
-                      }
-
-                      const buyToAddProductTo = dateToAddProductTo.buys?.find(buy => buy.time === time);
-                      if (!buyToAddProductTo) {
-                        console.error(`Buy at ${time} to add the product to - is not found`);
-                        return false;
-                      }
-
-                      buyToAddProductTo.products = data; // saving in 'dates'
-
-                      // react to changed products if same date is active
-                      thisApp.displayNewProductState(thisApp.activeDateBuys, buyToAddProductTo, dateToAddProductTo);
+                    return false;
+                  } else {
+                    const dateToAddProductTo = thisApp.dates?.find(buyDate => buyDate.date === date);
+                    if (!dateToAddProductTo) {
+                      console.error(`Date ${date} to add the product to - is not found`);
+                      return false;
                     }
+
+                    const buyToAddProductTo = dateToAddProductTo.buys?.find(buy => buy.time === time);
+                    if (!buyToAddProductTo) {
+                      console.error(`Buy at ${time} to add the product to - is not found`);
+                      return false;
+                    }
+
+                    buyToAddProductTo.products = data; // saving in local 'dates'
+
+                    // react to changed products if same date is active
+                    thisApp.displayNewProductState(thisApp.activeDateBuys, buyToAddProductTo, dateToAddProductTo, 'add');
+                  }
                 });
             })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
             });
+    },
+    removeProduct(productInfoForRemove) {
+      console.log('productInfoForRemove: ', JSON.stringify(productInfoForRemove, null, 2));
+      const thisApp = this;
+      const date = productInfoForRemove.date;
+      const time = productInfoForRemove.time;
+      const { name, price, weightAmount, measure, description, discount } = productInfoForRemove.product;
+
+      const nameEncoded = encodeURIComponent(name);
+
+      let url = `http://localhost:3030/remove-product?date=${date}&time=${time}&name=${nameEncoded}&price=${price}&weightAmount=${weightAmount}&measure=${measure}&discount=${discount}`;
+      url += description ? `&description=${description}` : '';
+
+      if (confirm('You sure, you want to delete this product?')) {
+          console.log(`Prompted deleting of the product. Confirmed. The product ${name} on ${date} at ${time} is going to be deleted...`);
+      } else {
+          console.log(`Prompted deleting of the product. Rejected. The product ${name} on ${date} at ${time} is NOT going to be deleted.`);
+          return false;
+      }
+
+      fetch(url)
+          .then((response) => {
+              if (response.status !== 200) {
+                  console.log(
+                  'Looks like there was a problem. Status Code: ' + response.status
+                  );
+                  return;
+              }
+
+              response.json().then(function (data) {
+                  if (data.success === false) {
+                      console.log('Error. Program stops. ', data.error);
+                      return false;
+                  } else {
+                    console.log(`Server response -> operation completed: status: ${data.success ? 'success' : 'failure'}, description: ${data.message}`);
+
+                    const dateToRemoveProductFrom = thisApp.dates?.find(buyDate => buyDate.date === date);
+                    if (!dateToRemoveProductFrom) {
+                      console.error(`Date ${date} to remove the product from - is not found`);
+                      return false;
+                    }
+
+                    const buyToRemoveProductFrom = dateToRemoveProductFrom.buys?.find(buy => buy.time === time);
+                    if (!buyToRemoveProductFrom) {
+                      console.error(`Buy at ${time} to remove the product from - is not found`);
+                      return false;
+                    }
+
+                    const resultProducts = buyToRemoveProductFrom.products.filter(buy => {
+                      const isProductToDelete = buy.name === name && buy.price === price && buy.weightAmount === weightAmount && buy.measure === measure && buy.discount === discount && buy.description === description;
+
+                      return isProductToDelete ? false : true;
+                    });
+
+                    if (buyToRemoveProductFrom.products.length === resultProducts.length) {
+                      console.log(`Product for deletion ${name} was not found locally on ${date} at ${time}`);
+
+                      return false;
+                    }
+
+                    buyToRemoveProductFrom.products = resultProducts; // saving in local 'dates'
+
+                    // react to changed products if same date is active
+                    thisApp.displayNewProductState(thisApp.activeDateBuys, buyToRemoveProductFrom, dateToRemoveProductFrom, 'remove');
+                  }
+              });
+          })
+          .catch(function (err) {
+              console.log('Fetch Error :-S', err);
+          });
     },
     countDateProducts() {
       return this.activeDateBuys.reduce((acc, v) => acc + v.products.length, 0);
@@ -336,26 +406,36 @@ export default {
         });
     },
     // utils
-    displayNewProductState(activeDateBuys, buyWithAddedProduct, dateToAddProductTo) {
+    displayNewProductState(activeDateBuys, buyWithProductChange, dateWithProductsChange, changeType) {
       const activeDate = activeDateBuys && activeDateBuys[0] && activeDateBuys[0].date;
-      const changedBuyDate = buyWithAddedProduct.date;
+      const changedBuyDate = buyWithProductChange.date;
       let activeProductAmount = null;
+      
+      let changePhrase1 = null; 
+      let changePhrase2 = null; 
+      if (changeType === 'add') {
+        changePhrase1 = 'which was added the product to';
+        changePhrase2 = 'added to';
+      } else if (changeType === 'remove') {
+        changePhrase1 = 'which was removed the product from';
+        changePhrase2 = 'removed from';
+      }
 
       if (activeDate !== changedBuyDate) { 
-        console.log(`Date ${changedBuyDate} which was added the product to is not active anymore. Product already added to local data, nothing more to do.`);
+        console.log(`Date ${changedBuyDate} ${changePhrase1} is not active anymore. Product already ${changePhrase2} local data, nothing more to do.`);
         return false;
       }
 
-      const activeDateBuyToUpdate = activeDateBuys.find(buy => buy.time === buyWithAddedProduct.time);
+      const activeDateBuyToUpdate = activeDateBuys.find(buy => buy.time === buyWithProductChange.time);
       if (!activeDateBuyToUpdate) {
-        console.log(`No buy at ${buyWithAddedProduct.time} for the active date ${activeDate} was found.`);
+        console.log(`No buy at ${buyWithProductChange.time} for the active date ${activeDate} was found.`);
         return false;
       }
 
-      activeDateBuyToUpdate.products = JSON.parse(JSON.stringify(buyWithAddedProduct.products));
+      activeDateBuyToUpdate.products = JSON.parse(JSON.stringify(buyWithProductChange.products));
       activeProductAmount = this.countDateProducts();
       // save the new amount of products for a particular date: 
-      dateToAddProductTo.count = activeProductAmount;
+      dateWithProductsChange.count = activeProductAmount;
     }
   },
   created: function () {
