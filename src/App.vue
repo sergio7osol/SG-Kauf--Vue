@@ -122,8 +122,7 @@ export default {
     },
     activeCurrency() { // TODO: make converting to one currency for all buys (in case they are different)
       try {
-        console.log('this.activeDateBuys[0]: ', this.activeDateBuys[0]);
-        return this.activeDateBuys[0].currency;
+        return this.activeDateBuys[0]?.currency;
       } catch (error) {
         return '';
       }
@@ -142,7 +141,7 @@ export default {
             }
 
             response.json().then(function(data) {
-              console.log('dates: ', data.length);
+              console.log('incoming dates: ', data.length);
               data.forEach(date => {
                 dates.push(date);
               });
@@ -150,7 +149,7 @@ export default {
           }
         )
         .catch(function(err) {
-          console.log('getAllDates', 'Fetch Error :-S', err);
+          console.log('Fetch Error :-S', err);
         });
     },
     getDate: function(e) {

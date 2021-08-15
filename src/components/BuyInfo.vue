@@ -51,6 +51,17 @@
 <script>
 import ProductList from './ProductList.vue';
 
+const staticValueCollection = {
+  countries: ['Germany', 'Russia', 'online'],
+  shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'PENNY', 'Amazon.de', 'Netflix.com', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'About you', 'Netflix', 'Innovativelanguage.com', 'Mango', 'OVB', 'Vodavone GmbH', 'Telekom Deutschland GmbH', 'Ernst Scholz', 'Sparkasse', 'Apotheke in der Marktplatz Galerie'], 
+  indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249', '22525', '22041', '22177', '22179', 'online', ''],
+  cities: ['Hamburg', 'Moscow', 'Saransk', 'online', ''],
+  streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße', 'Kieler Straße', 'Grelckstraße', 'Walddörferstraße', 'Eppendorfer Baum', 'Bramfelder Chaussee', 'Bramfelder Dorfplatz', 'online', ''],
+  houseNumbers: ['387', '8', '7', '13-15', '2', '39', '34',  '35', '300', '70', '116-122', '4-8', '30-40', '595', '579', '146', '230', '18', 'online', ''],
+  currencies: ['EUR', 'RUB'],
+  payMethods: ['EC card', 'Cash', 'N26 card', 'PayPal']
+};
+
 export default {
   name: 'buy-info',
   data() {
@@ -66,16 +77,7 @@ export default {
         localPayMethod: this.payMethod,
         localShopName: this.shopName,
         localProducts: this.products,
-        ValueCollection: {
-            countries: ['Germany', 'Russia', 'online'],
-            shopNames: ['REWE', 'ALDI', 'Kaufland', 'Lidl', 'PENNY', 'Amazon.de', 'Netflix.com', 'Edeka', 'ROHLFS BÄCKEREI KONDITOREI GmbH', 'Apotheke a.d. Friedenseiche Nikolaus Wendel', 'About you', 'Netflix', 'Innovativelanguage.com', 'Mango', 'OVB', 'Vodavone GmbH', 'Telekom Deutschland GmbH', 'Ernst Scholz', 'Sparkasse', 'Apotheke in der Marktplatz Galerie'], 
-            indexes: ['22307', '22529', '22299', '20251', '22761', '22301', '20249', '22525', '22041', '22177', '22179', 'online'],
-            cities: ['Hamburg', 'Moscow', 'Saransk', 'online'],
-            streets: ['Fuhlsbuettler Str.', 'Troplowitzstrasse', 'Osterfeldestrasse', 'Winterhuder Marktplatz', 'Eppendorfer Marktplatz', 'Stresemannstrasse', 'Nedderfeld', 'Dorotheenstrasse', 'Kümmellstraße', 'Kieler Straße', 'Grelckstraße', 'Walddörferstraße', 'Eppendorfer Baum', 'Bramfelder Chaussee', 'Bramfelder Dorfplatz', 'online'],
-            houseNumbers: ['387', '8', '7', '13-15', '2', '39', '34',  '35', '300', '70', '116-122', '4-8', '30-40', '595', '579', '146', '230', '18', 'online'],
-            currencies: ['EUR', 'RUB'],
-            payMethods: ['EC card', 'Cash', 'N26 card', 'PayPal']
-        }
+        ValueCollection: { ...staticValueCollection }
     };
 
     console.log('dataState: ', dataState);
@@ -94,58 +96,57 @@ export default {
     currency: {
         type: String,
         validator: function(value) {
-            return ['EUR', 'RUB'].indexOf(value) !== -1;
+            return staticValueCollection.currencies.indexOf(value) !== -1;
         }
     },
     country: {
         type: String,
         validator: function(value) {
-            return ['Germany', 'Russia'].indexOf(value) !== -1;
+            return staticValueCollection.countries.indexOf(value) !== -1;
         }
     },
     city: {
         type: String,
         validator: function(value) {
-            return ['Hamburg', 'Moscow', 'Saransk'].indexOf(value) !== -1;
+            return staticValueCollection.cities.indexOf(value) !== -1;
         }
     },
     index: {
         type: String,
         validator: function(value) {
-            return ['22307'].indexOf(value) !== -1;
+            return staticValueCollection.indexes.indexOf(value) !== -1;
         }
     },
     street: {
         type: String,
         validator: function(value) {
-            return ['Fuhlsbuettler Str.'].indexOf(value) !== -1;
+            return staticValueCollection.streets.indexOf(value) !== -1;
         }
     },
     houseNumber: {
         type: String,
         validator: function(value) {
-            return ['387'].indexOf(value) !== -1;
+            return staticValueCollection.houseNumbers.indexOf(value) !== -1;
         }
     },
     payMethod: {
         type: String,
         validator: function(value) {
-            return ['EC card', 'Cash'].indexOf(value) !== -1;
+            return staticValueCollection.payMethods.indexOf(value) !== -1;
         }
     },
     shopName: {
         type: String,
         validator: function(value) {
-            return ['REWE'].indexOf(value) !== -1;
+            return staticValueCollection.shopNames.indexOf(value) !== -1;
         }
     },
     products: {
-        type: Array,
-        // validator: function(value) {
-        //     return ['REWE'].indexOf(value) !== -1;
-        // }
+        type: Array // TODO
     },
-    isDefault: Boolean
+    isDefault: {
+      type: Boolean
+    }
   },
   emits: [],
   watch: {
